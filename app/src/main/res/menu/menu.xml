@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/filter_button"
+        android:title="@string/set_filter"
+        android:icon="@drawable/ic_baseline_filter_list_white_24"
+        app:showAsAction="ifRoom">
+
+        <menu>
+
+            <item
+                android:id="@+id/filter_date"
+                android:title="@string/filter_date"
+                app:showAsAction="never"/>
+
+            <item
+                android:id="@+id/filter_place"
+                android:title="@string/filter_place"
+                app:showAsAction="never"/>
+
+            <item
+                android:id="@+id/filters_reset"
+                android:title="@string/reset_filters"
+                app:showAsAction="never"/>
+
+        </menu>
+
+    </item>
+
+</menu>
