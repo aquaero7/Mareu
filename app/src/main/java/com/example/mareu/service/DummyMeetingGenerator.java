@@ -9,6 +9,7 @@ import com.example.mareu.model.Room;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 
@@ -51,12 +52,15 @@ public abstract class DummyMeetingGenerator implements Parcelable {
     );
 
 
+
     static List<Room> generateRooms() {
-        return new ArrayList<>(ROOMS);
+        // return new ArrayList<>(ROOMS);  // Unsorted
+        return sortRoomsByName(new ArrayList<>(ROOMS));   // Sorted
     }
 
     static List<Meeting> generateMeetings() {
-        return new ArrayList<>(DUMMY_MEETINGS);
+        //return new ArrayList<>(DUMMY_MEETINGS);   // Unsorted
+        return sortMeetingsByDate(sortMeetingsByStart(sortMeetingsByEnd(new ArrayList<>(DUMMY_MEETINGS))));   // Sorted
     }
 
     static List<ReservationSlot> generateReservationSlots() {
@@ -64,4 +68,24 @@ public abstract class DummyMeetingGenerator implements Parcelable {
         return null;
     }
 
+
+    static List<Meeting> sortMeetingsByDate(List<Meeting> meetings) {
+        Collections.sort(meetings, Meeting.ComparatorDate);
+        return meetings;
+    }
+
+    static List<Meeting> sortMeetingsByStart(List<Meeting> meetings) {
+        Collections.sort(meetings, Meeting.ComparatorStart);
+        return meetings;
+    }
+
+    static List<Meeting> sortMeetingsByEnd(List<Meeting> meetings) {
+        Collections.sort(meetings, Meeting.ComparatorEnd);
+        return meetings;
+    }
+
+    static List<Room> sortRoomsByName(List<Room> rooms) {
+        Collections.sort(rooms, Room.ComparatorName);
+        return rooms;
+    }
 }

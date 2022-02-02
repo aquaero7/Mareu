@@ -46,7 +46,7 @@ public class ListMeetingsActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        //initList();
+        // initList();
         initNewList();    // A la place de initList() pour la non persistance de la liste lors de la rotation du device
         initRecyclerView();
     }

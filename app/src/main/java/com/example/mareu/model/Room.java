@@ -1,5 +1,10 @@
 package com.example.mareu.model;
 
+import androidx.annotation.NonNull;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Comparator;
 import java.util.List;
 
 /**
@@ -71,5 +76,25 @@ public class Room {
     public void setReservationSlots(List<ReservationSlot> reservationSlots) {
         mReservationSlots = reservationSlots;
     }
+
+    // Renvoie les informations de la salle
+    @NonNull
+    @Override
+    public String toString() {
+        // return super.toString();
+        return mName + " " + mColor + " " + mCapacity;
+    }
+
+    // Création du comparateur pour le tri
+    public static Comparator<Room> ComparatorName = new Comparator<Room>() {
+        @Override
+        public int compare(Room o1, Room o2) {
+            return o1.getName().compareTo(o2.getName());    // Tri croissant
+            // return o2.getName().compareTo(o1.getName());    // Tri décroissant
+        }
+    };
+
+
+
 
 }
