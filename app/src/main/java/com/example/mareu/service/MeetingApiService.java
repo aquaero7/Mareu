@@ -18,6 +18,12 @@ public interface MeetingApiService {
      * Get all my Meetings
      * @return {@link List}
      */
+    List<Meeting> getDummyMeetings();
+
+    /**
+     * Get all my Meetings
+     * @return {@link List}
+     */
     List<Meeting> getMeetings();
 
     /**

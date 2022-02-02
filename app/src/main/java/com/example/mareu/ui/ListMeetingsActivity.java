@@ -4,7 +4,6 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
 import android.view.Menu;
@@ -47,7 +46,8 @@ public class ListMeetingsActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        initList();
+        //initList();
+        initNewList();    // A la place de initList() pour la non persistance de la liste lors de la rotation du device
         initRecyclerView();
     }
 
@@ -80,6 +80,11 @@ public class ListMeetingsActivity extends AppCompatActivity {
 
     private void initList() {
         mMeetings = mMeetingApiService.getMeetings();
+    }
+
+    private void initNewList() {
+        // Pour la non persistance de la liste lors de la rotation du device
+        mMeetings = mMeetingApiService.getDummyMeetings();
     }
 
     private void createRecyclerView() {
