@@ -14,36 +14,26 @@ import android.widget.Toast;
 
 import com.example.mareu.R;
 import com.example.mareu.databinding.FragmentMeetingBinding;
+import com.example.mareu.events.DeleteMeetingEvent;
 import com.example.mareu.model.Meeting;
-import com.example.mareu.ui.placeholder.PlaceholderContent.PlaceholderItem;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.util.List;
 
-/**
- * {@link RecyclerView.Adapter} that can display a {@link PlaceholderItem}.
- * TODO: Replace the implementation with code for your data type.   A supprimer
- */
+
 public class MyMeetingRecyclerViewAdapter extends RecyclerView.Adapter<MyMeetingRecyclerViewAdapter.ViewHolder> {
 
-    /* // Initialement TODO : A supprimer ---------------------------------------------------------
-    private final List<PlaceholderItem> mValues;
-
-    public MyMeetingRecyclerViewAdapter(List<PlaceholderItem> items) {
-        mValues = items;
-    }
-    */ // Fin -------------------------------------------------------------------------------------
-
-    // // Init variables et constructeur RV Adapter -----------------------------------------------
+    // Init variables et constructeur RV Adapter --------------------------------------------------
     private final List<Meeting> mMeetings;
     public MyMeetingRecyclerViewAdapter(List<Meeting> meetings) {
         this.mMeetings = meetings;
     }
-    // // Fin -------------------------------------------------------------------------------------
+    // Fin ----------------------------------------------------------------------------------------
 
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-
         // // Initialement & option A2 OK ---------------------------------------------------------
         return new ViewHolder(FragmentMeetingBinding.inflate(LayoutInflater.from(parent.getContext()), parent, false));
         // // Fin ---------------------------------------------------------------------------------
@@ -52,40 +42,26 @@ public class MyMeetingRecyclerViewAdapter extends RecyclerView.Adapter<MyMeeting
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.fragment_meeting, parent, false);
         return new ViewHolder(view);
         */ // Fin ---------------------------------------------------------------------------------
-
-        /* // Option A2 OK TODO : A supprimer -----------------------------------------------------
-        return new ViewHolder(FragmentMeetingBinding.inflate(LayoutInflater.from(parent.getContext()), parent, false));
-        */ // Fin ---------------------------------------------------------------------------------
-
-
     }
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
+        // Appelé autant de fois qu'on a d'éléments dans la liste, quand l'élément arrive à l'écran
 
-        // Appelé autant de fois qu'on a d'éléments dans la liste, quand l'élément arrive à l'écran.
+        // Affichage de l'item --------------------------------------------------------------------
+        holder.displayMeeting(mMeetings.get(position));     // Méthode displayMeeting créée dans ViewHolder
+        // Fin ------------------------------------------------------------------------------------
 
-        /* // Initialement TODO : A supprimer -----------------------------------------------------
-        holder.mItem = mValues.get(position);
-        holder.mLine1.setText(mValues.get(position).id);
-        holder.mLine2.setText(mValues.get(position).content);
-        */ // Fin ---------------------------------------------------------------------------------
-
-        // // Affichage de l'item -----------------------------------------------------------------
-        holder.displayMeeting(mMeetings.get(position)); // Méthode displayMeeting créée dans ViewHolder.
-        // // Fin ---------------------------------------------------------------------------------
+        // Mise en place d'un listener sur le bouton de suppression -------------------------------
+        holder.setDeleteButton(mMeetings.get(position));    // Méthode setDeleteButton créée dans ViewHolder
+        // Fin ------------------------------------------------------------------------------------
     }
 
     @Override
     public int getItemCount() {
-
-        /* // Initialement TODO : A supprimer  ----------------------------------------------------
-        return mValues.size();
-        */ // Fin ---------------------------------------------------------------------------------
-
-        // // Décompte des items de la liste à afficher -------------------------------------------
+        // Décompte des items de la liste à afficher ----------------------------------------------
         return mMeetings.size();
-        // // Fin ---------------------------------------------------------------------------------
+        // Fin ------------------------------------------------------------------------------------
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
@@ -101,9 +77,8 @@ public class MyMeetingRecyclerViewAdapter extends RecyclerView.Adapter<MyMeeting
         public final TextView mLine1;
         public final TextView mLine2;
         public final ImageButton mDeleteButton;
-        // public PlaceholderItem mItem;    // TODO : A supprimer
 
-        // // Constructeur ViewHolder et liens avec layout ----------------------------------------
+        // Constructeur ViewHolder et liens avec layout -------------------------------------------
 
         // // Initialement & option A2 OK ---------------------------------------------------------
         public ViewHolder(FragmentMeetingBinding meetingBinding) {
@@ -125,17 +100,19 @@ public class MyMeetingRecyclerViewAdapter extends RecyclerView.Adapter<MyMeeting
         }
         */ // Fin ---------------------------------------------------------------------------------
 
-        /* // Option A2 OK TODO : A supprimer -----------------------------------------------------
-        public ViewHolder(FragmentMeetingBinding meetingBinding) {
-            super(meetingBinding.getRoot());
-            mColorMeeting = meetingBinding.colorMeeting;
-            mLine1 = meetingBinding.line1;
-            mLine2 = meetingBinding.line2;
-            mDeleteButton = meetingBinding.deleteButton;
-        }
-        */ // Fin ---------------------------------------------------------------------------------
 
-        // Création méthode appelée dans onBindViewHolder pour afficher l'élément à la position courante.
+        // Création de la méthode appelée dans onBindViewHolder pour le listener à la position courante
+        public void setDeleteButton(Meeting meeting) {
+            mDeleteButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    EventBus.getDefault().post(new DeleteMeetingEvent(meeting));
+                }
+            });
+        }
+        // Fin ------------------------------------------------------------------------------------
+
+        // Création de la méthode appelée dans onBindViewHolder pour afficher l'élément à la position courante
         public void displayMeeting(Meeting meeting) {
             // L'argument étant un id de couleur ou une couleur au format "#xxxxxxxx"...
 
@@ -152,11 +129,8 @@ public class MyMeetingRecyclerViewAdapter extends RecyclerView.Adapter<MyMeeting
             mLine1.setText(meeting.getName() + " - " + meeting.getStart().replace(":", "h") + " - " + meeting.getRoom().getName());
             mLine2.setText(meeting.getParticipants());
         }
+        // Fin ------------------------------------------------------------------------------------
 
-        // TODO : A supprimer
-        @Override
-        public String toString() {
-            return super.toString() + " '" + mLine2.getText() + "'";
-        }
+
     }
 }
