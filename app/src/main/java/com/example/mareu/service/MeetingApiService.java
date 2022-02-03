@@ -4,6 +4,7 @@ import com.example.mareu.model.Meeting;
 import com.example.mareu.model.ReservationSlot;
 import com.example.mareu.model.Room;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -70,6 +71,12 @@ public interface MeetingApiService {
      * @return room
      */
     Room getRoomByName(String name);
+
+    /**
+     * Get list of Room names
+     * @return @String
+     */
+    CharSequence[] getRoomsList();
 
 
     /* Methods about ReservationSlots for a room */

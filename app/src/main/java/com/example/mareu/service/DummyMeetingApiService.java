@@ -22,7 +22,7 @@ public class DummyMeetingApiService implements MeetingApiService {
 
     @Override
     public List<Meeting> getMeetings() {
-        return meetings;
+            return meetings;
     }
 
     @Override
@@ -75,12 +75,22 @@ public class DummyMeetingApiService implements MeetingApiService {
     @Override
     public Room getRoomByName(String name) {
         for(Room room : rooms) {
-            if(room.getName() == name) {
+            if(room.getName().equals(name)) {
                 return room;
             }
         }
         return null;
     }
+
+    @Override
+    public CharSequence[] getRoomsList() {
+        CharSequence[] roomsList = new CharSequence[rooms.size()];
+        for (int i = 0; i < rooms.size(); i++) {
+            roomsList[i] = rooms.get(i).getName();
+        }
+        return roomsList;
+    }
+
 
     @Override
     public List<ReservationSlot> getReservationSlots() {
