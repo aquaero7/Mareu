@@ -93,4 +93,20 @@
         "For example, position the FAB to one side of stream of a cards so the FAB won’t interfere "
         "when a user tries to pick up one of cards.\n\n"
     </string>
+
+    <string-array name="meeting_rooms">
+        <item>Salle A</item>
+        <item>Salle B</item>
+        <item>Salle C</item>
+        <item>Salle D</item>
+        <item>Salle E</item>
+        <item>Salle F</item>
+        <item>Salle G</item>
+        <item>Salle H</item>
+        <item>Salle I</item>
+        <item>Salle J</item>
+    </string-array>
+
+
+
 </resources>

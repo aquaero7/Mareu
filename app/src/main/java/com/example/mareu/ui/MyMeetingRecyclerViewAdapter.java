@@ -3,18 +3,13 @@ package com.example.mareu.ui;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.example.mareu.R;
 import com.example.mareu.databinding.FragmentMeetingBinding;
-import com.example.mareu.di.DI;
 import com.example.mareu.events.DeleteMeetingEvent;
 import com.example.mareu.model.Meeting;
 
@@ -128,10 +123,11 @@ public class MyMeetingRecyclerViewAdapter extends RecyclerView.Adapter<MyMeeting
             // // Fin -----------------------------------------------------------------------------
 
             mLine1.setText(meeting.getName() + " - " + meeting.getStart().replace(":", "h") + " - " + meeting.getRoom().getName());
-            mLine2.setText(meeting.getParticipants());
+            mLine2.setText(meeting.getParticipantsToString());
         }
         // Fin ------------------------------------------------------------------------------------
 
 
     }
+
 }

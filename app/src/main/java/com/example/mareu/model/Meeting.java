@@ -1,10 +1,15 @@
 package com.example.mareu.model;
 
+
 import androidx.annotation.NonNull;
+
+import com.example.mareu.ui.ListMeetingsActivity;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.List;
 
 /**
  * Model object representing a Meeting
@@ -30,10 +35,10 @@ public class Meeting {
     private Room mRoom;
 
     /** Participants */
-    private String mParticipants;
+    private List<String> mParticipants;
 
 
-    public Meeting(long id, String name, String date, String start, String end, Room room, String participants) {
+    public Meeting(long id, String name, String date, String start, String end, Room room, List<String> participants) {
         mId = id;
         mName = name;
         mDate = date;
@@ -91,12 +96,20 @@ public class Meeting {
         mRoom = room;
     }
 
-    public String getParticipants() {
+    public List<String> getParticipants() {
         return mParticipants;
     }
 
-    public void setParticipants(String participants) {
+    public void setParticipants(List<String> participants) {
         mParticipants = participants;
+    }
+
+    public String getParticipantsToString() {
+        String sParticipants = "";
+        for (String participant : mParticipants) {
+            sParticipants = sParticipants + participant + ", ";
+        }
+        return sParticipants;
     }
 
     // Création d'un timestamp
@@ -114,8 +127,8 @@ public class Meeting {
         public int compare(Meeting o1, Meeting o2) {
             SimpleDateFormat dfDate = new SimpleDateFormat("dd/MM/yyyy");
             try {
-                return dfDate.parse(o1.getDate()).compareTo(dfDate.parse(o2.getDate()));    // Tri croissant
-                // return dfDate.parse(o2.getDate()).compareTo(dfDate.parse(o1.getDate()));    // Tri décroissant
+                // return dfDate.parse(o1.getDate()).compareTo(dfDate.parse(o2.getDate()));    // Tri croissant
+                return dfDate.parse(o2.getDate()).compareTo(dfDate.parse(o1.getDate()));    // Tri décroissant
             } catch (ParseException e) {
                 e.printStackTrace();
                 return 0;

@@ -13,12 +13,20 @@
         <entry key="app/src/main/res/drawable/ic_baseline_filter_list_white_24.xml" value="0.37447916666666664" />
         <entry key="app/src/main/res/drawable/ic_launcher_background.xml" value="0.37447916666666664" />
         <entry key="app/src/main/res/drawable/sh_circle_24.xml" value="0.2665" />
-        <entry key="app/src/main/res/layout/activity_list_meetings.xml" value="0.2768729641693811" />
+        <entry key="app/src/main/res/drawable/sh_listview_background.xml" value="0.166" />
+        <entry key="app/src/main/res/drawable/sh_participants_background.xml" value="0.166" />
+        <entry key="app/src/main/res/layout/activity_add_meeting.xml" value="0.22" />
+        <entry key="app/src/main/res/layout/activity_list_meetings.xml" value="0.25" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.25" />
         <entry key="app/src/main/res/layout/fragment_item_list.xml" value="0.3197463768115942" />
         <entry key="app/src/main/res/layout/fragment_meeting.xml" value="0.25" />
         <entry key="app/src/main/res/layout/fragment_meetings_list.xml" value="0.25" />
         <entry key="app/src/main/res/layout/fragment_scrolling.xml" value="0.3197463768115942" />
+        <entry key="app/src/main/res/layout/list_item.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/room_dropdown_item.xml" value="0.15625" />
+        <entry key="app/src/main/res/layout/scrolling_items.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/toolbartest.xml" value="0.15677083333333333" />
+        <entry key="app/src/main/res/menu/exposed_menu.xml" value="0.5" />
         <entry key="app/src/main/res/menu/menu.xml" value="0.3528205128205128" />
       </map>
     </option>

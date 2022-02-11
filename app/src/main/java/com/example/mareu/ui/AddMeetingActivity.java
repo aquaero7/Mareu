@@ -1,0 +1,361 @@
+package com.example.mareu.ui;
+
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
+import android.app.DatePickerDialog;
+import android.app.TimePickerDialog;
+import android.content.DialogInterface;
+import android.os.Bundle;
+import android.os.Handler;
+import android.util.Log;
+import android.view.MotionEvent;
+import android.view.View;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
+import android.widget.Button;
+import android.widget.DatePicker;
+import android.widget.ImageButton;
+import android.widget.ListView;
+import android.widget.TextView;
+import android.widget.TimePicker;
+import android.widget.Toast;
+import com.example.mareu.R;
+import com.example.mareu.databinding.ActivityAddMeetingBinding;
+import com.example.mareu.di.DI;
+import com.example.mareu.events.CreateMeetingEvent;
+import com.example.mareu.events.DeleteMeetingEvent;
+import com.example.mareu.model.Meeting;
+import com.example.mareu.service.MeetingApiService;
+import com.google.android.material.textfield.TextInputLayout;
+
+import org.greenrobot.eventbus.EventBus;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
+import java.util.Locale;
+
+public class AddMeetingActivity extends AppCompatActivity implements View.OnClickListener, View.OnTouchListener {
+
+    private ActivityAddMeetingBinding mActivityAddMeetingBinding;
+    private MeetingApiService mMeetingApiService = DI.getMeetingApiService();
+    private static final int DEFAULT_MEETING_DURATION_IN_MIN = 45;
+    List<String> participantsList = new ArrayList<>();
+    ArrayAdapter participantsListAdapter;
+    // private TextInputEditText nameTxt;  // TODO : A supprimer
+    private TextInputLayout nameLyt;
+    private TextInputLayout dateLyt;
+    private TextInputLayout startTimeLyt;
+    private TextInputLayout endTimeLyt;
+    private TextInputLayout roomLyt;
+    private AutoCompleteTextView roomTextView;
+    private TextInputLayout addParticipantLyt;
+    private ImageButton addParticipantButton;
+    // private TextInputLayout participantsListLyt; // TODO : A supprimer
+    private ListView participantsListView;
+    private Button returnButton;
+    private Button createMeetingButton;
+    private Date mDate;
+    private Date mTime;
+    private SimpleDateFormat dfDate = new SimpleDateFormat("dd/MM/yyyy", Locale.FRANCE);
+    private SimpleDateFormat dfDateLong = new SimpleDateFormat("dd MMMM yyyy", Locale.FRANCE);
+    private SimpleDateFormat dfTime = new SimpleDateFormat("HH:mm", Locale.FRANCE);
+    private Calendar now;
+    private Boolean mailOK, fieldsOK, slotOK;
+    //
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        // init UI --------------------------------------------------------------------------------
+        initView();
+        initListeners();
+        now = Calendar.getInstance();
+        // Fin ------------------------------------------------------------------------------------
+    }
+
+    // Méthodes -----------------------------------------------------------------------------------
+
+    // Init View & binding ------------------------------------------------------------------------
+    private void initView() {
+        // Init view
+        mActivityAddMeetingBinding = ActivityAddMeetingBinding.inflate(getLayoutInflater());
+        View view = mActivityAddMeetingBinding.getRoot();
+        setContentView(view);
+
+        // Binding
+        // nameTxt = mActivityAddMeetingBinding.nameMeetingEditText;    // TODO : A supprimer
+        nameLyt = mActivityAddMeetingBinding.nameMeetingLayout;
+        dateLyt = mActivityAddMeetingBinding.dateMeetingLayout;
+        startTimeLyt = mActivityAddMeetingBinding.startTimeMeetingLayout;
+        endTimeLyt = mActivityAddMeetingBinding.endTimeMeetingLayout;
+        roomLyt = mActivityAddMeetingBinding.roomMeetingLayout;
+        roomTextView = mActivityAddMeetingBinding.roomMeetingTextView;
+        addParticipantLyt = mActivityAddMeetingBinding.addParticipantLayout;
+        addParticipantButton = mActivityAddMeetingBinding.buttonAddParticipant;
+        // participantsListLyt = mActivityAddMeetingBinding.listParticipantsLayout; // TODO : A supprimer
+        participantsListView = mActivityAddMeetingBinding.participantsListView;
+        returnButton = mActivityAddMeetingBinding.buttonReturn;
+        createMeetingButton = mActivityAddMeetingBinding.buttonCreateMeeting;
+
+        // Init roomsList
+        CharSequence[] roomsList = mMeetingApiService.getRoomsList();
+        ArrayAdapter roomDropdownAdapter = new ArrayAdapter(this, R.layout.list_item, roomsList);
+        roomTextView.setAdapter(roomDropdownAdapter);
+
+        // Init participantsList
+        // List<String> participantsList = mMeetingApiService.getMeetings().get(0).getParticipants();  // Pour test uniquement
+        participantsListAdapter = new ArrayAdapter(this, R.layout.list_item, participantsList);
+        participantsListView.setAdapter(participantsListAdapter);
+
+    }
+    // Fin ----------------------------------------------------------------------------------------
+
+    // Init listeners -----------------------------------------------------------------------------
+    private void initListeners() {
+        nameLyt.getEditText().setOnTouchListener(this);
+        dateLyt.getEditText().setOnClickListener(this);
+        startTimeLyt.getEditText().setOnClickListener(this);
+        endTimeLyt.getEditText().setOnClickListener(this);
+        roomLyt.getEditText().setOnClickListener(this);
+        addParticipantLyt.getEditText().setOnClickListener(this);
+        addParticipantButton.setOnClickListener(this);
+        returnButton.setOnClickListener(this);
+        createMeetingButton.setOnClickListener(this);
+    }
+
+    @Override
+    public void onClick(View v) {
+        if (v == dateLyt.getEditText()) { dateLyt.setError(""); dateSetting(); }
+        if (v == startTimeLyt.getEditText()) { startTimeLyt.setError("");
+            try {
+                timeSetting(true, false);
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+        }
+        if (v == endTimeLyt.getEditText()) { endTimeLyt.setError("");
+            try {
+                timeSetting(false, true);
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+        }
+        if (v == roomLyt.getEditText()) { roomLyt.setError(""); }
+        if (v == addParticipantLyt.getEditText()) { addParticipantLyt.setError(""); }
+        if (v == addParticipantButton) { addParticipant(); }
+        if (v == returnButton) { finish(); }
+        if (v == createMeetingButton) {
+            try {
+                performCkecks();
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    @Override
+    public boolean onTouch(View v, MotionEvent event) {
+        if (v == nameLyt.getEditText()) { nameLyt.setError(""); }
+        return false;
+    }
+    // Fin ----------------------------------------------------------------------------------------
+
+    public void dateSetting() {
+        int selectedYear = now.get(Calendar.YEAR);
+        int selectedMonth = now.get(Calendar.MONTH);
+        int selectedDayOfMonth = now.get(Calendar.DAY_OF_MONTH);
+
+        // Set DatePickerDialog (date listener)
+        DatePickerDialog.OnDateSetListener dateSetListener = new DatePickerDialog.OnDateSetListener() {
+            @Override
+            public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+                Calendar calD = Calendar.getInstance();
+                calD.set(Calendar.YEAR, year);
+                calD.set(Calendar.MONTH, month);
+                calD.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+                mDate = calD.getTime();
+                dateLyt.getEditText().setText(dfDateLong.format(mDate));
+            }
+        };
+
+        // Create DatePickerDialog (Spinner mode)
+        DatePickerDialog datePickerDialog = new DatePickerDialog(this,
+                dateSetListener, selectedYear, selectedMonth, selectedDayOfMonth);
+
+        // Show DatePickerDialog
+        datePickerDialog.show();
+
+    }
+
+    public void timeSetting(Boolean start, Boolean end) throws ParseException {
+
+        // Set TimePickerDialog (time listener)
+        TimePickerDialog.OnTimeSetListener timeSetListener = new TimePickerDialog.OnTimeSetListener() {
+            @Override
+            public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+                Calendar calH = Calendar.getInstance();
+                calH.set(Calendar.HOUR_OF_DAY, hourOfDay);
+                calH.set(Calendar.MINUTE, minute);
+                mTime = calH.getTime();
+                if (start) {
+                    startTimeLyt.getEditText().setText(dfTime.format(mTime).replace(":", "h"));
+
+                    if (endTimeLyt.getEditText().getText().toString().isEmpty()) {
+                        Calendar calH2 = Calendar.getInstance();
+                        calH2.setTime(mTime);
+                        calH2.add(Calendar.MINUTE,  DEFAULT_MEETING_DURATION_IN_MIN);
+                        Date mTime2 = calH2.getTime();
+                        endTimeLyt.getEditText().setText(dfTime.format(mTime2).replace(":", "h"));
+                    }
+                }
+                if (end) endTimeLyt.getEditText().setText(dfTime.format(mTime).replace(":", "h"));
+            }
+        };
+
+        // Create TimePickerDialog
+
+        int selectedHourOfDay = now.get(Calendar.HOUR_OF_DAY);
+        int selectedMinute = now.get(Calendar.MINUTE);
+
+        if (start && !startTimeLyt.getEditText().getText().toString().isEmpty()) {
+            Date oldDate = dfTime.parse(startTimeLyt.getEditText().getText().toString().replace("h", ":"));
+            Calendar oldCal = Calendar.getInstance();
+            oldCal.setTime(oldDate);
+            selectedHourOfDay = oldCal.get(Calendar.HOUR_OF_DAY);
+            selectedMinute = oldCal.get(Calendar.MINUTE);
+        } else if (end && !endTimeLyt.getEditText().getText().toString().isEmpty()) {
+            Date oldDate = dfTime.parse(endTimeLyt.getEditText().getText().toString().replace("h", ":"));
+            Calendar oldCal = Calendar.getInstance();
+            oldCal.setTime(oldDate);
+            selectedHourOfDay = oldCal.get(Calendar.HOUR_OF_DAY);
+            selectedMinute = oldCal.get(Calendar.MINUTE);
+        }
+
+        TimePickerDialog timePickerDialog = new TimePickerDialog(this,
+                timeSetListener, selectedHourOfDay, selectedMinute, true);
+
+        // Show DatePickerDialog
+        timePickerDialog.show();
+    }
+
+    public void addParticipant() {
+        checkMail();
+        if (mailOK) {
+            participantsList.add(addParticipantLyt.getEditText().getText().toString().toLowerCase(Locale.ROOT));
+            participantsListAdapter.notifyDataSetChanged();
+            addParticipantLyt.getEditText().getText().clear();
+        } else { addParticipantLyt.setError("L'adresse eMail est incorrecte !"); }
+    }
+
+    public void performCkecks() throws ParseException {
+        checkFields();
+        checkSlot();
+        if (fieldsOK && slotOK) {
+            if (participantsList.isEmpty()) {
+                showAlertDialog();
+            } else {
+                createMeeting();
+            }
+        }
+    }
+
+    public void checkMail() {
+        mailOK = true;
+        String mailAddress = addParticipantLyt.getEditText().getText().toString();
+        int occurAt = 0, occurDot = 0;
+        for (int i = 0; i < mailAddress.length(); i++) {
+            if (mailAddress.charAt(i) == '@') { occurAt ++; }
+        }
+
+        if (mailAddress.indexOf("@") < 1 || occurAt != 1
+                || mailAddress.charAt(mailAddress.length()-3) == '@'
+                || mailAddress.charAt(mailAddress.length()-2) == '@'
+                || mailAddress.charAt(mailAddress.length()-1) == '@'
+                || mailAddress.indexOf(".") < 1 || mailAddress.charAt(mailAddress.length()-1) == '.'
+        ) { mailOK = false; }
+    }
+
+    public void checkFields() {
+        fieldsOK = true;
+        if (nameLyt.getEditText().getText().toString().isEmpty()) {
+            nameLyt.setError("Saisir le nom de la réunion !");
+            fieldsOK = false;
+        }
+        if (dateLyt.getEditText().getText().toString().isEmpty()) {
+            dateLyt.setError("Choisir une date !");
+            fieldsOK = false;
+        }
+        if (startTimeLyt.getEditText().getText().toString().isEmpty()) {
+            startTimeLyt.setError("Choisir une heure !");
+            fieldsOK = false;
+        }
+        if (endTimeLyt.getEditText().getText().toString().isEmpty()) {
+            endTimeLyt.setError("Choisir une heure !");
+            fieldsOK = false;
+        }
+        if (roomTextView.getText().toString().isEmpty()) {
+            roomLyt.setError("Choisir une salle !");
+            fieldsOK = false;
+        }
+        if (!startTimeLyt.getEditText().getText().toString().isEmpty()
+                && !endTimeLyt.getEditText().getText().toString().isEmpty()
+                && (endTimeLyt.getEditText().getText().toString()).compareTo(startTimeLyt.getEditText().getText().toString()) <= 0) {
+            endTimeLyt.setError("Heure de fin incorrecte !");
+            fieldsOK = false;
+        }
+    }
+
+    public void showAlertDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Confirmation")
+                .setMessage("La liste des participants est vide !" + "Planifier quand même ?")
+                .setPositiveButton("OUI", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        try {
+                            createMeeting();
+                        } catch (ParseException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                })
+                .setNegativeButton("NON", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) { }
+                })
+                .create()
+                .show();
+    }
+
+    public void checkSlot() {
+        // TODO
+        slotOK = true;
+    }
+
+    public void createMeeting() throws ParseException {
+
+        Meeting meetingToAdd = new Meeting(System.currentTimeMillis(),
+                nameLyt.getEditText().getText().toString(),
+                dfDate.format(dfDateLong.parse(dateLyt.getEditText().getText().toString())),
+                startTimeLyt.getEditText().getText().toString().replace("h", ":"),
+                endTimeLyt.getEditText().getText().toString().replace("h", ":"),
+                mMeetingApiService.getRoomByName(roomLyt.getEditText().getText().toString().split(" ")[0]),
+                participantsList);
+
+        // Envoi de l'event après un délai nécessaire au réabonnement de ListMeetingActivity à l'EventBus
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                EventBus.getDefault().post(new CreateMeetingEvent(meetingToAdd));
+            }
+        }, 1000);
+
+        finish();
+    }
+
+}

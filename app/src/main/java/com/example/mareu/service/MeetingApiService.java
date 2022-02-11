@@ -22,6 +22,12 @@ public interface MeetingApiService {
     List<Meeting> getDummyMeetings();
 
     /**
+     * Get all my Rooms
+     * @return {@link List}
+     */
+    public List<Room> getDummyRooms();
+
+    /**
      * Get all my Meetings
      * @return {@link List}
      */
@@ -38,6 +44,12 @@ public interface MeetingApiService {
      * @return {@link List}
      */
     List<Meeting> getMeetingsByDate(String date);
+
+    /**
+     * Get list of participants emails
+     * @return @String
+     */
+    // CharSequence[] getParticipantsList(Meeting meeting); // TODO : A supprimer
 
     /**
      * Deletes a Meeting
@@ -82,10 +94,41 @@ public interface MeetingApiService {
     /* Methods about ReservationSlots for a room */
 
     /**
-     * Get all ReservationSlots
-     * @return {@link List}
+     * Release a reservation slot when deleting meeting
+     * @param meeting
      */
-    List<ReservationSlot> getReservationSlots();
+    public void deleteRoomReservationSlot(Meeting meeting);
+
+    /**
+     * Create a reservation slot when creating meeting
+     * @param meeting
+     */
+    public void createRoomReservationSlot(Meeting meeting);
+
+
+    /**
+     * Sort meetings list by date
+     * @param meetings
+     */
+    public List<Meeting> sortMeetingsByDate(List<Meeting> meetings);
+
+    /**
+     * Sort meetings list by start time
+     * @param meetings
+     */
+    public List<Meeting> sortMeetingsByStart(List<Meeting> meetings);
+
+    /**
+     * Sort meetings list by end time
+     * @param meetings
+     */
+    public List<Meeting> sortMeetingsByEnd(List<Meeting> meetings);
+
+    /**
+     * Sort rooms list by start name
+     * @param rooms
+     */
+    public List<Room> sortRoomsByName(List<Room> rooms);
 
 }
 

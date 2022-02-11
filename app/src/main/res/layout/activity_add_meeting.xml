@@ -1,0 +1,280 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_gravity="center_horizontal"
+    tools:context=".ui.AddMeetingActivity"
+    >
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="center_horizontal">
+
+        <com.google.android.material.appbar.AppBarLayout
+            android:id="@+id/appBar_add"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="visible"
+            >
+
+            <Toolbar
+                android:id="@+id/toolBar_add"
+                android:layout_width="wrap_content"
+                android:layout_height="28dp"
+                android:title="Création d'une réunion"
+                android:titleTextAppearance="@dimen/material_emphasis_medium"
+                android:titleTextColor="@color/white"
+                android:gravity="center"
+                android:layout_gravity="center"
+                android:visibility="visible"
+                />
+
+        </com.google.android.material.appbar.AppBarLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/name_meeting_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:hint="Nom de la réunion"
+            app:layout_constraintTop_toBottomOf="@id/appBar_add"
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginHorizontal="8dp"
+            android:layout_marginTop="4dp"
+            app:startIconDrawable="@drawable/ic_outline_create_24"
+            app:startIconTint="@color/blue_500"
+            app:endIconDrawable="@drawable/ic_baseline_cancel_24"
+            app:endIconTint="@color/red"
+            app:endIconMode="clear_text"
+            app:errorEnabled="true"
+            >
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/name_meeting_editText"
+
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:singleLine="true"
+                />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/date_meeting_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:hint="Date"
+            app:layout_constraintTop_toBottomOf="@id/name_meeting_layout"
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginHorizontal="8dp"
+            android:layout_marginTop="4dp"
+            app:startIconDrawable="@drawable/ic_outline_edit_calendar_24"
+            app:startIconTint="@color/blue_500"
+            app:errorEnabled="true"
+            >
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:lines="1"
+                android:inputType="date"
+                android:focusable="false"
+                />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/start_time_meeting_layout"
+            android:layout_width="180dp"
+            android:layout_height="wrap_content"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:hint="Heure de début"
+            app:layout_constraintTop_toBottomOf="@id/date_meeting_layout"
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginHorizontal="8dp"
+            android:layout_marginTop="4dp"
+            app:startIconDrawable="@drawable/ic_outline_access_time_24"
+            app:startIconTint="@color/blue_500"
+            app:errorEnabled="true"
+            >
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:lines="1"
+                android:inputType="time"
+                android:focusable="false"
+                />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/end_time_meeting_layout"
+            android:layout_width="180dp"
+            android:layout_height="wrap_content"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:hint="Heure de fin"
+            app:layout_constraintTop_toBottomOf="@id/date_meeting_layout"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginHorizontal="8dp"
+            android:layout_marginTop="4dp"
+            app:startIconDrawable="@drawable/ic_outline_access_time_24"
+            app:startIconTint="@color/blue_500"
+            app:errorEnabled="true"
+            >
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:lines="1"
+                android:inputType="time"
+                android:focusable="false"
+                />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/room_meeting_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"        android:hint="Salle"
+            app:layout_constraintTop_toBottomOf="@id/end_time_meeting_layout"
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginHorizontal="8dp"
+            android:layout_marginTop="4dp"
+            app:startIconDrawable="@drawable/ic_outline_meeting_room_24"
+            app:startIconTint="@color/blue_500"
+            app:errorEnabled="true"
+            >
+
+            <AutoCompleteTextView
+                android:id="@+id/room_meeting_textView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:inputType="none"
+                android:hint="Salle"
+                />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/add_participant_layout"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:hint="Ajouter un participant"
+            app:layout_constraintTop_toBottomOf="@id/room_meeting_layout"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/button_add_participant"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="4dp"
+            app:startIconDrawable="@drawable/ic_outline_create_24"
+            app:startIconTint="@color/blue_500"
+            app:endIconDrawable="@drawable/ic_baseline_cancel_24"
+            app:endIconTint="@color/red"
+            app:endIconMode="clear_text"
+            app:helperText="Saisir une adresse email"
+            app:errorEnabled="true"
+            >
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/add_participant_editText"
+
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:singleLine="true"
+                />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <ImageButton
+            android:id="@+id/button_add_participant"
+            app:layout_constraintTop_toBottomOf="@id/room_meeting_layout"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_width="64dp"
+            android:layout_height="64dp"
+            android:layout_marginTop="4dp"
+            android:layout_marginEnd="8dp"
+            android:src="@drawable/ic_outline_group_add_24"
+            android:backgroundTint="@color/blue_500"
+            app:tint="@color/white"
+            />
+
+        <TextView
+            android:id="@+id/list_participants_title_layout"
+            app:layout_constraintTop_toBottomOf="@id/add_participant_layout"
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:layout_marginHorizontal="8dp"
+            android:background="@color/blue_500"
+            android:textColor="@color/white"
+            android:text="Participants"
+            android:textSize="14sp"
+            android:gravity="bottom"
+            android:padding="4dp"
+
+            />
+
+        <LinearLayout
+            android:id="@+id/list_participants_layout"
+            android:layout_width="match_parent"
+            android:layout_height="112dp"
+            app:layout_constraintTop_toBottomOf="@id/list_participants_title_layout"
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginHorizontal="8dp"
+            >
+
+            <ListView
+                android:id="@+id/participants_listView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="none"
+                android:paddingHorizontal="8dp"
+                android:scrollbars="vertical"
+                android:scrollbarSize="12dp"
+                android:scrollbarStyle="outsideInset"
+                android:background="@drawable/sh_listview_background"
+                />
+
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/button_return"
+            style="@style/Widget.MaterialComponents.Button"
+            android:text="Retour"
+            android:gravity="center"
+            android:layout_width="120dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/list_participants_layout"
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginTop="4dp"
+            android:layout_marginBottom="12dp"
+            android:layout_marginHorizontal="48dp"
+            />
+
+        <Button
+            android:id="@+id/button_create_meeting"
+            style="@style/Widget.MaterialComponents.Button"
+            android:text="Planifier"
+            android:gravity="center"
+            android:layout_width="120dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/list_participants_layout"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginTop="4dp"
+            android:layout_marginBottom="12dp"
+            android:layout_marginHorizontal="48dp"
+            />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</ScrollView>

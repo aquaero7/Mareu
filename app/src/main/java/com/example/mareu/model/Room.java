@@ -77,12 +77,20 @@ public class Room {
         mReservationSlots = reservationSlots;
     }
 
+    public void deleteReservationSlot(ReservationSlot reservationSlot) {
+        mReservationSlots.remove(reservationSlot);
+    }
+
+    public void addReservationSlot(ReservationSlot reservationSlot) {
+        mReservationSlots.add(reservationSlot);
+    }
+
     // Renvoie les informations de la salle
     @NonNull
     @Override
     public String toString() {
         // return super.toString();
-        return mName + " " + mColor + " " + mCapacity;
+        return mName + " (capacité : " + mCapacity + " personnes)";
     }
 
     // Création du comparateur pour le tri
