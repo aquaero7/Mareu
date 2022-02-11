@@ -16,24 +16,21 @@ import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.ImageButton;
 import android.widget.ListView;
-import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 import com.example.mareu.R;
 import com.example.mareu.databinding.ActivityAddMeetingBinding;
 import com.example.mareu.di.DI;
 import com.example.mareu.events.CreateMeetingEvent;
-import com.example.mareu.events.DeleteMeetingEvent;
 import com.example.mareu.model.Meeting;
+import com.example.mareu.model.ReservationSlot;
+import com.example.mareu.model.Room;
 import com.example.mareu.service.MeetingApiService;
 import com.google.android.material.textfield.TextInputLayout;
-
 import org.greenrobot.eventbus.EventBus;
-
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -46,27 +43,18 @@ public class AddMeetingActivity extends AppCompatActivity implements View.OnClic
     private static final int DEFAULT_MEETING_DURATION_IN_MIN = 45;
     List<String> participantsList = new ArrayList<>();
     ArrayAdapter participantsListAdapter;
-    // private TextInputEditText nameTxt;  // TODO : A supprimer
-    private TextInputLayout nameLyt;
-    private TextInputLayout dateLyt;
-    private TextInputLayout startTimeLyt;
-    private TextInputLayout endTimeLyt;
-    private TextInputLayout roomLyt;
+    private TextInputLayout nameLyt, dateLyt, startTimeLyt, endTimeLyt, roomLyt;
     private AutoCompleteTextView roomTextView;
     private TextInputLayout addParticipantLyt;
     private ImageButton addParticipantButton;
-    // private TextInputLayout participantsListLyt; // TODO : A supprimer
     private ListView participantsListView;
-    private Button returnButton;
-    private Button createMeetingButton;
-    private Date mDate;
-    private Date mTime;
+    private Button returnButton, createMeetingButton;
+    private Date mDate, mTime;
     private SimpleDateFormat dfDate = new SimpleDateFormat("dd/MM/yyyy", Locale.FRANCE);
     private SimpleDateFormat dfDateLong = new SimpleDateFormat("dd MMMM yyyy", Locale.FRANCE);
     private SimpleDateFormat dfTime = new SimpleDateFormat("HH:mm", Locale.FRANCE);
     private Calendar now;
     private Boolean mailOK, fieldsOK, slotOK;
-    //
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,7 +63,7 @@ public class AddMeetingActivity extends AppCompatActivity implements View.OnClic
         initView();
         initListeners();
         now = Calendar.getInstance();
-        // Fin ------------------------------------------------------------------------------------
+        // Fin init UI ----------------------------------------------------------------------------
     }
 
     // Méthodes -----------------------------------------------------------------------------------
@@ -88,7 +76,6 @@ public class AddMeetingActivity extends AppCompatActivity implements View.OnClic
         setContentView(view);
 
         // Binding
-        // nameTxt = mActivityAddMeetingBinding.nameMeetingEditText;    // TODO : A supprimer
         nameLyt = mActivityAddMeetingBinding.nameMeetingLayout;
         dateLyt = mActivityAddMeetingBinding.dateMeetingLayout;
         startTimeLyt = mActivityAddMeetingBinding.startTimeMeetingLayout;
@@ -97,7 +84,6 @@ public class AddMeetingActivity extends AppCompatActivity implements View.OnClic
         roomTextView = mActivityAddMeetingBinding.roomMeetingTextView;
         addParticipantLyt = mActivityAddMeetingBinding.addParticipantLayout;
         addParticipantButton = mActivityAddMeetingBinding.buttonAddParticipant;
-        // participantsListLyt = mActivityAddMeetingBinding.listParticipantsLayout; // TODO : A supprimer
         participantsListView = mActivityAddMeetingBinding.participantsListView;
         returnButton = mActivityAddMeetingBinding.buttonReturn;
         createMeetingButton = mActivityAddMeetingBinding.buttonCreateMeeting;
@@ -108,12 +94,10 @@ public class AddMeetingActivity extends AppCompatActivity implements View.OnClic
         roomTextView.setAdapter(roomDropdownAdapter);
 
         // Init participantsList
-        // List<String> participantsList = mMeetingApiService.getMeetings().get(0).getParticipants();  // Pour test uniquement
         participantsListAdapter = new ArrayAdapter(this, R.layout.list_item, participantsList);
         participantsListView.setAdapter(participantsListAdapter);
-
     }
-    // Fin ----------------------------------------------------------------------------------------
+    // Fin Init View & binding --------------------------------------------------------------------
 
     // Init listeners -----------------------------------------------------------------------------
     private void initListeners() {
@@ -130,32 +114,22 @@ public class AddMeetingActivity extends AppCompatActivity implements View.OnClic
 
     @Override
     public void onClick(View v) {
-        if (v == dateLyt.getEditText()) { dateLyt.setError(""); dateSetting(); }
+        if (v == dateLyt.getEditText()) { dateLyt.setError("");
+            try { dateSetting(); }
+            catch (ParseException e) { e.printStackTrace(); System.out.println("Error " + e.getMessage()); } }
         if (v == startTimeLyt.getEditText()) { startTimeLyt.setError("");
-            try {
-                timeSetting(true, false);
-            } catch (ParseException e) {
-                e.printStackTrace();
-            }
-        }
+            try { timeSetting(true, false); }
+            catch (ParseException e) { e.printStackTrace(); System.out.println("Error " + e.getMessage()); } }
         if (v == endTimeLyt.getEditText()) { endTimeLyt.setError("");
-            try {
-                timeSetting(false, true);
-            } catch (ParseException e) {
-                e.printStackTrace();
-            }
-        }
+            try { timeSetting(false, true); }
+            catch (ParseException e) { e.printStackTrace(); System.out.println("Error " + e.getMessage()); } }
         if (v == roomLyt.getEditText()) { roomLyt.setError(""); }
         if (v == addParticipantLyt.getEditText()) { addParticipantLyt.setError(""); }
         if (v == addParticipantButton) { addParticipant(); }
         if (v == returnButton) { finish(); }
         if (v == createMeetingButton) {
-            try {
-                performCkecks();
-            } catch (ParseException e) {
-                e.printStackTrace();
-            }
-        }
+            try { performCkecks(); }
+            catch (ParseException e) { e.printStackTrace(); System.out.println("Error " + e.getMessage()); } }
     }
 
     @Override
@@ -163,13 +137,9 @@ public class AddMeetingActivity extends AppCompatActivity implements View.OnClic
         if (v == nameLyt.getEditText()) { nameLyt.setError(""); }
         return false;
     }
-    // Fin ----------------------------------------------------------------------------------------
+    // Fin Init listeners -------------------------------------------------------------------------
 
-    public void dateSetting() {
-        int selectedYear = now.get(Calendar.YEAR);
-        int selectedMonth = now.get(Calendar.MONTH);
-        int selectedDayOfMonth = now.get(Calendar.DAY_OF_MONTH);
-
+    public void dateSetting() throws ParseException {
         // Set DatePickerDialog (date listener)
         DatePickerDialog.OnDateSetListener dateSetListener = new DatePickerDialog.OnDateSetListener() {
             @Override
@@ -183,17 +153,29 @@ public class AddMeetingActivity extends AppCompatActivity implements View.OnClic
             }
         };
 
-        // Create DatePickerDialog (Spinner mode)
+        // Create DatePickerDialog
+        int selectedYear = now.get(Calendar.YEAR);
+        int selectedMonth = now.get(Calendar.MONTH);
+        int selectedDayOfMonth = now.get(Calendar.DAY_OF_MONTH);
+
+        // Le picker affiche la date déja définie si le champ n'est pas vide, sinon la date du jour
+        if (!dateLyt.getEditText().getText().toString().isEmpty()) {
+            Date oldDate = dfDateLong.parse(dateLyt.getEditText().getText().toString());
+            Calendar oldCalDate = Calendar.getInstance();
+            oldCalDate.setTime(oldDate);
+            selectedYear = oldCalDate.get(Calendar.YEAR);
+            selectedMonth = oldCalDate.get(Calendar.MONTH);
+            selectedDayOfMonth = oldCalDate.get(Calendar.DAY_OF_MONTH);
+        }
+
         DatePickerDialog datePickerDialog = new DatePickerDialog(this,
                 dateSetListener, selectedYear, selectedMonth, selectedDayOfMonth);
 
         // Show DatePickerDialog
         datePickerDialog.show();
-
     }
 
     public void timeSetting(Boolean start, Boolean end) throws ParseException {
-
         // Set TimePickerDialog (time listener)
         TimePickerDialog.OnTimeSetListener timeSetListener = new TimePickerDialog.OnTimeSetListener() {
             @Override
@@ -202,9 +184,8 @@ public class AddMeetingActivity extends AppCompatActivity implements View.OnClic
                 calH.set(Calendar.HOUR_OF_DAY, hourOfDay);
                 calH.set(Calendar.MINUTE, minute);
                 mTime = calH.getTime();
-                if (start) {
-                    startTimeLyt.getEditText().setText(dfTime.format(mTime).replace(":", "h"));
-
+                if (start) { startTimeLyt.getEditText().setText(dfTime.format(mTime).replace(":", "h"));
+                    // Preset end time calculated with default duration
                     if (endTimeLyt.getEditText().getText().toString().isEmpty()) {
                         Calendar calH2 = Calendar.getInstance();
                         calH2.setTime(mTime);
@@ -218,22 +199,22 @@ public class AddMeetingActivity extends AppCompatActivity implements View.OnClic
         };
 
         // Create TimePickerDialog
-
         int selectedHourOfDay = now.get(Calendar.HOUR_OF_DAY);
         int selectedMinute = now.get(Calendar.MINUTE);
 
+        // Le picker affiche l'heure déja définie si le champ n'est pas vide, sinon l'heure courante
         if (start && !startTimeLyt.getEditText().getText().toString().isEmpty()) {
-            Date oldDate = dfTime.parse(startTimeLyt.getEditText().getText().toString().replace("h", ":"));
-            Calendar oldCal = Calendar.getInstance();
-            oldCal.setTime(oldDate);
-            selectedHourOfDay = oldCal.get(Calendar.HOUR_OF_DAY);
-            selectedMinute = oldCal.get(Calendar.MINUTE);
+            Date oldTime = dfTime.parse(startTimeLyt.getEditText().getText().toString().replace("h", ":"));
+            Calendar oldCalTime = Calendar.getInstance();
+            oldCalTime.setTime(oldTime);
+            selectedHourOfDay = oldCalTime.get(Calendar.HOUR_OF_DAY);
+            selectedMinute = oldCalTime.get(Calendar.MINUTE);
         } else if (end && !endTimeLyt.getEditText().getText().toString().isEmpty()) {
-            Date oldDate = dfTime.parse(endTimeLyt.getEditText().getText().toString().replace("h", ":"));
-            Calendar oldCal = Calendar.getInstance();
-            oldCal.setTime(oldDate);
-            selectedHourOfDay = oldCal.get(Calendar.HOUR_OF_DAY);
-            selectedMinute = oldCal.get(Calendar.MINUTE);
+            Date oldTime = dfTime.parse(endTimeLyt.getEditText().getText().toString().replace("h", ":"));
+            Calendar oldCalTime = Calendar.getInstance();
+            oldCalTime.setTime(oldTime);
+            selectedHourOfDay = oldCalTime.get(Calendar.HOUR_OF_DAY);
+            selectedMinute = oldCalTime.get(Calendar.MINUTE);
         }
 
         TimePickerDialog timePickerDialog = new TimePickerDialog(this,
@@ -254,12 +235,11 @@ public class AddMeetingActivity extends AppCompatActivity implements View.OnClic
 
     public void performCkecks() throws ParseException {
         checkFields();
-        checkSlot();
-        if (fieldsOK && slotOK) {
-            if (participantsList.isEmpty()) {
-                showAlertDialog();
-            } else {
-                createMeeting();
+        if (fieldsOK) {
+            checkSlot();
+            if (slotOK) {
+                if (participantsList.isEmpty()) { showAlertDialog(); }
+                else { createMeeting(); }
             }
         }
     }
@@ -267,7 +247,7 @@ public class AddMeetingActivity extends AppCompatActivity implements View.OnClic
     public void checkMail() {
         mailOK = true;
         String mailAddress = addParticipantLyt.getEditText().getText().toString();
-        int occurAt = 0, occurDot = 0;
+        int occurAt = 0;
         for (int i = 0; i < mailAddress.length(); i++) {
             if (mailAddress.charAt(i) == '@') { occurAt ++; }
         }
@@ -283,30 +263,25 @@ public class AddMeetingActivity extends AppCompatActivity implements View.OnClic
     public void checkFields() {
         fieldsOK = true;
         if (nameLyt.getEditText().getText().toString().isEmpty()) {
-            nameLyt.setError("Saisir le nom de la réunion !");
-            fieldsOK = false;
+            nameLyt.setError("Saisir le nom de la réunion !"); fieldsOK = false;
         }
         if (dateLyt.getEditText().getText().toString().isEmpty()) {
-            dateLyt.setError("Choisir une date !");
-            fieldsOK = false;
+            dateLyt.setError("Choisir une date !"); fieldsOK = false;
         }
         if (startTimeLyt.getEditText().getText().toString().isEmpty()) {
-            startTimeLyt.setError("Choisir une heure !");
-            fieldsOK = false;
+            startTimeLyt.setError("Choisir une heure !"); fieldsOK = false;
         }
         if (endTimeLyt.getEditText().getText().toString().isEmpty()) {
-            endTimeLyt.setError("Choisir une heure !");
-            fieldsOK = false;
+            endTimeLyt.setError("Choisir une heure !"); fieldsOK = false;
         }
         if (roomTextView.getText().toString().isEmpty()) {
-            roomLyt.setError("Choisir une salle !");
-            fieldsOK = false;
+            roomLyt.setError("Choisir une salle !"); fieldsOK = false;
         }
         if (!startTimeLyt.getEditText().getText().toString().isEmpty()
                 && !endTimeLyt.getEditText().getText().toString().isEmpty()
-                && (endTimeLyt.getEditText().getText().toString()).compareTo(startTimeLyt.getEditText().getText().toString()) <= 0) {
-            endTimeLyt.setError("Heure de fin incorrecte !");
-            fieldsOK = false;
+                && (endTimeLyt.getEditText().getText().toString())
+                    .compareTo(startTimeLyt.getEditText().getText().toString()) <= 0) {
+            endTimeLyt.setError("Heure de fin incorrecte !"); fieldsOK = false;
         }
     }
 
@@ -317,11 +292,8 @@ public class AddMeetingActivity extends AppCompatActivity implements View.OnClic
                 .setPositiveButton("OUI", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        try {
-                            createMeeting();
-                        } catch (ParseException e) {
-                            e.printStackTrace();
-                        }
+                        try { createMeeting(); }
+                        catch (ParseException e) { e.printStackTrace(); }
                     }
                 })
                 .setNegativeButton("NON", new DialogInterface.OnClickListener() {
@@ -332,13 +304,24 @@ public class AddMeetingActivity extends AppCompatActivity implements View.OnClic
                 .show();
     }
 
-    public void checkSlot() {
-        // TODO
+    public void checkSlot() throws ParseException {
         slotOK = true;
+        String selectedDate = dfDate.format(dfDateLong.parse(dateLyt.getEditText().getText().toString()));
+        String selectedStart = startTimeLyt.getEditText().getText().toString().replace("h", ":");
+        String selectedEnd = endTimeLyt.getEditText().getText().toString().replace("h", ":");
+        Room selectedRoom = mMeetingApiService.getRoomByName(roomLyt.getEditText().getText().toString().split(" ")[0]);
+
+        for (ReservationSlot slot : selectedRoom.getReservationSlots()) {
+            if (selectedDate.equals(slot.getDate())) {
+                if ((selectedEnd.compareTo(slot.getStart()) >= 0) && (selectedStart.compareTo(slot.getEnd()) <= 0)) {
+                    slotOK = false;
+                    roomLyt.setError("La salle n'est pas disponible sur ce créneau !");
+                }
+            }
+        }
     }
 
     public void createMeeting() throws ParseException {
-
         Meeting meetingToAdd = new Meeting(System.currentTimeMillis(),
                 nameLyt.getEditText().getText().toString(),
                 dfDate.format(dfDateLong.parse(dateLyt.getEditText().getText().toString())),
@@ -350,10 +333,8 @@ public class AddMeetingActivity extends AppCompatActivity implements View.OnClic
         // Envoi de l'event après un délai nécessaire au réabonnement de ListMeetingActivity à l'EventBus
         new Handler().postDelayed(new Runnable() {
             @Override
-            public void run() {
-                EventBus.getDefault().post(new CreateMeetingEvent(meetingToAdd));
-            }
-        }, 1000);
+            public void run() { EventBus.getDefault().post(new CreateMeetingEvent(meetingToAdd)); }
+        }, 500);
 
         finish();
     }

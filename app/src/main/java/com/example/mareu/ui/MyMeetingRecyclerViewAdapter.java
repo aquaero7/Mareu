@@ -1,8 +1,11 @@
 package com.example.mareu.ui;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Context;
+import android.content.DialogInterface;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,6 +28,7 @@ public class MyMeetingRecyclerViewAdapter extends RecyclerView.Adapter<MyMeeting
     public MyMeetingRecyclerViewAdapter(List<Meeting> meetings) {
         this.mMeetings = meetings;
     }
+    Context deleteButtonContext;  // Déclaration pour utilisation du contexte dans l'AlertDialog
     // Fin ----------------------------------------------------------------------------------------
 
 
@@ -46,18 +50,18 @@ public class MyMeetingRecyclerViewAdapter extends RecyclerView.Adapter<MyMeeting
 
         // Affichage de l'item --------------------------------------------------------------------
         holder.displayMeeting(mMeetings.get(position));     // Méthode displayMeeting créée dans ViewHolder
-        // Fin ------------------------------------------------------------------------------------
 
         // Mise en place d'un listener sur le bouton de suppression -------------------------------
         holder.setDeleteButton(mMeetings.get(position));    // Méthode setDeleteButton créée dans ViewHolder
-        // Fin ------------------------------------------------------------------------------------
+
+        // Pour utilisation du contexte dans l'AlertDialog
+        deleteButtonContext = holder.mDeleteButton.getContext();
     }
 
     @Override
     public int getItemCount() {
         // Décompte des items de la liste à afficher ----------------------------------------------
         return mMeetings.size();
-        // Fin ------------------------------------------------------------------------------------
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
@@ -70,8 +74,8 @@ public class MyMeetingRecyclerViewAdapter extends RecyclerView.Adapter<MyMeeting
         public final CardView mColorMeeting;
         // // Fin ---------------------------------------------------------------------------------
 
-        public final TextView mLine1;
-        public final TextView mLine2;
+        public final TextView mLine1, mLine2;
+        // public final TextView mLine2;    // TODO : A supprimer
         public final ImageButton mDeleteButton;
 
         // Constructeur ViewHolder et liens avec layout -------------------------------------------
@@ -96,21 +100,19 @@ public class MyMeetingRecyclerViewAdapter extends RecyclerView.Adapter<MyMeeting
         }
         */ // Fin ---------------------------------------------------------------------------------
 
-
         // Création de la méthode appelée dans onBindViewHolder pour le listener à la position courante
         public void setDeleteButton(Meeting meeting) {
             mDeleteButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    EventBus.getDefault().post(new DeleteMeetingEvent(meeting));
+                    showAlertDialog(meeting);
                 }
             });
         }
-        // Fin ------------------------------------------------------------------------------------
 
         // Création de la méthode appelée dans onBindViewHolder pour afficher l'élément à la position courante
         public void displayMeeting(Meeting meeting) {
-            // L'argument étant un id de couleur ou une couleur au format "#xxxxxxxx"...
+            // L'argument étant l'id d'une couleur ou une couleur au format "#xxxxxxxx" :
 
             /* // Option B1 OK avec ImageView d'un shape ou d'un VectorAsset ---------------------
             mColorMeeting.setColorFilter(mColorMeeting.getResources().getColor(meeting.getRoom().getColor()));
@@ -127,7 +129,23 @@ public class MyMeetingRecyclerViewAdapter extends RecyclerView.Adapter<MyMeeting
         }
         // Fin ------------------------------------------------------------------------------------
 
+        public void showAlertDialog(Meeting meeting) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(deleteButtonContext);
+            builder.setTitle("Confirmation")
+                    .setMessage("Voulez-vous supprimer cette réunion ?")
+                    .setPositiveButton("OUI", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            EventBus.getDefault().post(new DeleteMeetingEvent(meeting));
+                        }
+                    })
+                    .setNegativeButton("NON", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) { }
+                    })
+                    .create()
+                    .show();
+        }
 
     }
-
 }
