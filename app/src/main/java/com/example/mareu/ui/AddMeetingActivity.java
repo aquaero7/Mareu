@@ -7,7 +7,6 @@ import android.app.TimePickerDialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.os.Handler;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -17,7 +16,7 @@ import android.widget.DatePicker;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TimePicker;
-import android.widget.Toast;
+
 import com.example.mareu.R;
 import com.example.mareu.databinding.ActivityAddMeetingBinding;
 import com.example.mareu.di.DI;
@@ -230,7 +229,7 @@ public class AddMeetingActivity extends AppCompatActivity implements View.OnClic
             participantsList.add(addParticipantLyt.getEditText().getText().toString().toLowerCase(Locale.ROOT));
             participantsListAdapter.notifyDataSetChanged();
             addParticipantLyt.getEditText().getText().clear();
-        } else { addParticipantLyt.setError("L'adresse eMail est incorrecte !"); }
+        } else { addParticipantLyt.setError(getString(R.string.error_email)); }
     }
 
     public void performCkecks() throws ParseException {
@@ -263,32 +262,32 @@ public class AddMeetingActivity extends AppCompatActivity implements View.OnClic
     public void checkFields() {
         fieldsOK = true;
         if (nameLyt.getEditText().getText().toString().isEmpty()) {
-            nameLyt.setError("Saisir le nom de la réunion !"); fieldsOK = false;
+            nameLyt.setError(getString(R.string.error_meeting_name)); fieldsOK = false;
         }
         if (dateLyt.getEditText().getText().toString().isEmpty()) {
-            dateLyt.setError("Choisir une date !"); fieldsOK = false;
+            dateLyt.setError(getString(R.string.error_meeting_date)); fieldsOK = false;
         }
         if (startTimeLyt.getEditText().getText().toString().isEmpty()) {
-            startTimeLyt.setError("Choisir une heure !"); fieldsOK = false;
+            startTimeLyt.setError(getString(R.string.error_meeting_time)); fieldsOK = false;
         }
         if (endTimeLyt.getEditText().getText().toString().isEmpty()) {
-            endTimeLyt.setError("Choisir une heure !"); fieldsOK = false;
+            endTimeLyt.setError(getString(R.string.error_meeting_time)); fieldsOK = false;
         }
         if (roomTextView.getText().toString().isEmpty()) {
-            roomLyt.setError("Choisir une salle !"); fieldsOK = false;
+            roomLyt.setError(getString(R.string.error_meeting_room)); fieldsOK = false;
         }
         if (!startTimeLyt.getEditText().getText().toString().isEmpty()
                 && !endTimeLyt.getEditText().getText().toString().isEmpty()
                 && (endTimeLyt.getEditText().getText().toString())
                     .compareTo(startTimeLyt.getEditText().getText().toString()) <= 0) {
-            endTimeLyt.setError("Heure de fin incorrecte !"); fieldsOK = false;
+            endTimeLyt.setError(getString(R.string.error_meeting_endtime)); fieldsOK = false;
         }
     }
 
     public void showAlertDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("Confirmation")
-                .setMessage("La liste des participants est vide !" + "Planifier quand même ?")
+        builder.setTitle(getString(R.string.title_alertDialog))
+                .setMessage(getString(R.string.alertDialog_empty_participants_list))
                 .setPositiveButton("OUI", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
@@ -315,7 +314,7 @@ public class AddMeetingActivity extends AppCompatActivity implements View.OnClic
             if (selectedDate.equals(slot.getDate())) {
                 if ((selectedEnd.compareTo(slot.getStart()) >= 0) && (selectedStart.compareTo(slot.getEnd()) <= 0)) {
                     slotOK = false;
-                    roomLyt.setError("La salle n'est pas disponible sur ce créneau !");
+                    roomLyt.setError(getString(R.string.error_slot));
                 }
             }
         }

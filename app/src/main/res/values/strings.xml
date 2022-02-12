@@ -1,9 +1,63 @@
 <resources>
     <string name="app_name">Ma réu</string>
-    <string name="set_filter">Filtrer les réunions</string>
+
+    <string name="filter_set">Filtrer les réunions</string>
     <string name="filter_date">Filtrer par date</string>
     <string name="filter_place">Filtrer par lieu</string>
-    <string name="reset_filters">Supprimer les filtres</string>
+    <string name="filters_reset">Supprimer les filtres</string>
+    <string name="header_meetings_list">Toutes les réunions</string>
+    <string name="header_meetings_list_filtered_by_date">"Toutes les réunions du "</string>
+    <string name="header_meetings_list_filtered_by_place">"Toutes les réunions de la salle "</string>
+    <string name="header_add_meeting">Création d\'une réunion</string>
+    <string name="hint_meeting_name">Nom de la réunion</string>
+    <string name="hint_meeting_date">Date</string>
+    <string name="hint_meeting_startTime">Heure de début</string>
+    <string name="hint_meeting_endTime">Heure de fin</string>
+    <string name="hint_meeting_room">Sélectionner une salle</string>
+    <string name="hint_participant_add">Ajouter un participant</string>
+    <string name="helper_participant_add">Saisir une adresse email</string>
+    <string name="error_meeting_name">Saisir le nom de la réunion !</string>
+    <string name="error_meeting_date">Choisir une date !</string>
+    <string name="error_meeting_time">Choisir une heure !</string>
+    <string name="error_meeting_endtime">Heure de fin incorrecte !</string>
+    <string name="error_meeting_room">Choisir une salle !</string>
+    <string name="error_email">L\'adresse eMail est incorrecte !</string>
+    <string name="error_slot">La salle n\'est pas disponible sur ce créneau !</string>
+    <string name="title_participants_list">Participants</string>
+    <string name="title_alertDialog">Confirmation</string>
+    <string name="alertDialog_delete_meeting">Voulez-vous supprimer cette réunion ?</string>
+    <string name="alertDialog_empty_participants_list">La liste des participants est vide !\nPlanifier quand même ?</string>
+    <string name="button_return_text">Retour</string>
+    <string name="button_create_meeting_text">Planifier</string>
+    <string name="item">item</string>
+    
+    <string-array name="meeting_rooms">
+        <item>Salle A</item>
+        <item>Salle B</item>
+        <item>Salle C</item>
+        <item>Salle D</item>
+        <item>Salle E</item>
+        <item>Salle F</item>
+        <item>Salle G</item>
+        <item>Salle H</item>
+        <item>Salle I</item>
+        <item>Salle J</item>
+    </string-array>
+
+    <string-array name="participants_emails">
+        <item>aaaaaaaaaaaaaa@lamzone.com</item>
+        <item>bbbbbbbbbbbbbb@lamzone.com</item>
+        <item>cccccccccccccc@lamzone.com</item>
+        <item>dddddddddddddd@lamzone.com</item>
+        <item>eeeeeeeeeeeeee@lamzone.com</item>
+        <item>ffffffffffffff@lamzone.com</item>
+        <item>gggggggggggggg@lamzone.com</item>
+        <item>hhhhhhhhhhhhhh@lamzone.com</item>
+        <item>iiiiiiiiiiiiii@lamzone.com</item>
+        <item>jjjjjjjjjjjjjj@lamzone.com</item>
+    </string-array>
+
+
     <string name="large_text">
         "Material is the metaphor.\n\n"
 
@@ -93,20 +147,5 @@
         "For example, position the FAB to one side of stream of a cards so the FAB won’t interfere "
         "when a user tries to pick up one of cards.\n\n"
     </string>
-
-    <string-array name="meeting_rooms">
-        <item>Salle A</item>
-        <item>Salle B</item>
-        <item>Salle C</item>
-        <item>Salle D</item>
-        <item>Salle E</item>
-        <item>Salle F</item>
-        <item>Salle G</item>
-        <item>Salle H</item>
-        <item>Salle I</item>
-        <item>Salle J</item>
-    </string-array>
-
-
 
 </resources>

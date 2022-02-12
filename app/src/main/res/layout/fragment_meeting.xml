@@ -36,7 +36,7 @@
                 android:textStyle="bold"
                 android:textColor="@color/black"
                 android:singleLine="true"
-                android:gravity="left|bottom"
+                android:gravity="start|bottom"
                 android:paddingTop="4dp"
                 android:paddingHorizontal="8dp"
                 android:ellipsize="end"
@@ -55,7 +55,7 @@
                 android:textStyle="normal"
                 android:textColor="@color/black"
                 android:singleLine="true"
-                android:gravity="left|top"
+                android:gravity="start|top"
                 android:paddingBottom="4dp"
                 android:paddingHorizontal="8dp"
                 android:ellipsize="end"
@@ -72,6 +72,6 @@
         android:layout_marginStart="0dp"
         android:layout_marginEnd="0dp"
         android:src="@drawable/ic_baseline_delete_black_24"
-        android:backgroundTint="#00000000"/>
+        android:backgroundTint="@color/transparent"/>
 
 </LinearLayout>

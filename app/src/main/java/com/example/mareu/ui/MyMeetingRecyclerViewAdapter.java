@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
+import com.example.mareu.R;
 import com.example.mareu.databinding.FragmentMeetingBinding;
 import com.example.mareu.events.DeleteMeetingEvent;
 import com.example.mareu.model.Meeting;
@@ -75,7 +76,6 @@ public class MyMeetingRecyclerViewAdapter extends RecyclerView.Adapter<MyMeeting
         // // Fin ---------------------------------------------------------------------------------
 
         public final TextView mLine1, mLine2;
-        // public final TextView mLine2;    // TODO : A supprimer
         public final ImageButton mDeleteButton;
 
         // Constructeur ViewHolder et liens avec layout -------------------------------------------
@@ -131,8 +131,8 @@ public class MyMeetingRecyclerViewAdapter extends RecyclerView.Adapter<MyMeeting
 
         public void showAlertDialog(Meeting meeting) {
             AlertDialog.Builder builder = new AlertDialog.Builder(deleteButtonContext);
-            builder.setTitle("Confirmation")
-                    .setMessage("Voulez-vous supprimer cette réunion ?")
+            builder.setTitle(R.string.title_alertDialog)
+                    .setMessage(R.string.alertDialog_delete_meeting)
                     .setPositiveButton("OUI", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {

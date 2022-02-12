@@ -59,11 +59,4 @@ public abstract class DummyMeetingGenerator implements Parcelable {
         return new ArrayList<>(DUMMY_MEETINGS);   // Unsorted
     }
 
-    /*  // TODO : A supprimer
-    static List<ReservationSlot> generateReservationSlots() {
-        // return new ArrayList<>(DUMMY_SLOTS);
-        return null;
-    }
-    */
-
 }

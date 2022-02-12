@@ -163,7 +163,7 @@ public class ListMeetingsActivity extends AppCompatActivity {
 
     private void meetingDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("Sélectionnez une salle...");
+        builder.setTitle(R.string.hint_meeting_room);
         builder.setItems(mMeetingApiService.getRoomsList(), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
@@ -215,12 +215,12 @@ public class ListMeetingsActivity extends AppCompatActivity {
         if (byDate && !byRoom) {
             filterIsSetOnDate = true;
             filterIsSetOnRoom = false;
-            mListMeetingsBinding.header.setText("Toutes les réunions du " + dfDateLong.format(mDate));
+            mListMeetingsBinding.header.setText(getString(R.string.header_meetings_list_filtered_by_date) + dfDateLong.format(mDate));
         }
         else if (!byDate && byRoom) {
             filterIsSetOnDate = false;
             filterIsSetOnRoom = true;
-            mListMeetingsBinding.header.setText("Toutes les réunions de la salle " + mRoom.getName());
+            mListMeetingsBinding.header.setText(getString(R.string.header_meetings_list_filtered_by_place) + mRoom.getName());
         }
         else if (byDate && byRoom) {
             filterIsSetOnDate = true;
@@ -230,7 +230,7 @@ public class ListMeetingsActivity extends AppCompatActivity {
         else {
             filterIsSetOnDate = false;
             filterIsSetOnRoom = false;
-            mListMeetingsBinding.header.setText("Toutes les réunions");
+            mListMeetingsBinding.header.setText(getString(R.string.header_meetings_list));
         }
     }
     // Fin Actions selon sélection dans menu ------------------------------------------------------

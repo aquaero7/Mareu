@@ -10,10 +10,7 @@ import java.util.List;
 
 public class DummyMeetingApiService implements MeetingApiService {
 
-    // private List<ReservationSlot> reservationSlots = DummyMeetingGenerator.generateReservationSlots();   // TODO : A supprimer
-
     private List<Meeting> meetings = getDummyMeetings();
-    // private List<Room> rooms = DummyMeetingGenerator.generateRooms();    // TODO : A supprimer
     private List<Room> rooms = getDummyRooms();
 
     @Override
@@ -57,17 +54,6 @@ public class DummyMeetingApiService implements MeetingApiService {
         // return meetingsFilteredByDate;  // Unsorted
         return sortMeetingsByDate(sortMeetingsByStart(sortMeetingsByEnd(meetingsFilteredByDate)));   // Sorted
     }
-
-    /*  // TODO : A supprimer
-    @Override
-    public CharSequence[] getParticipantsList(Meeting meeting) {
-        CharSequence[] participantsList = new CharSequence[meeting.getParticipants().size()];
-        for (int i = 0; i < meeting.getParticipants().size(); i++) {
-            participantsList[i] = meeting.getParticipants().get(i);
-        }
-        return participantsList;
-    }
-    */
 
     @Override
     public void deleteMeeting(Meeting meeting) {

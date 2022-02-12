@@ -13,6 +13,10 @@
     <color name="red">#FFFF0000</color>
     <color name="green">#FF00FF00</color>
 
+    <color name="transparent">#00000000</color>
+
+    <color name="fab_add">#FFCC0000</color>
+
     <color name="azur">#FF00FFFF</color>
     <color name="magma">#FFFF0000</color>
     <color name="amazone">#FF00FF00</color>

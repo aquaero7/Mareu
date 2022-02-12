@@ -14,12 +14,12 @@
         android:layout_gravity="center_horizontal">
 
         <TextView
-            android:id="@+id/header_add"
+            android:id="@+id/header_add_meeting"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:text="Création d'une réunion"
+            android:text="@string/header_add_meeting"
             android:textColor="@color/white"
             android:background="@color/blue_500"
             android:gravity="center"
@@ -29,13 +29,13 @@
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/name_meeting_layout"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-            app:layout_constraintTop_toBottomOf="@id/header_add"
+            app:layout_constraintTop_toBottomOf="@id/header_add_meeting"
             app:layout_constraintStart_toStartOf="parent"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="8dp"
             android:layout_marginTop="4dp"
-            android:hint="Nom de la réunion"
+            android:hint="@string/hint_meeting_name"
             app:startIconDrawable="@drawable/ic_outline_create_24"
             app:startIconTint="@color/blue_500"
             app:endIconDrawable="@drawable/ic_baseline_cancel_24"
@@ -58,7 +58,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="8dp"
-            android:hint="Date"
+            android:hint="@string/hint_meeting_date"
             app:startIconDrawable="@drawable/ic_outline_edit_calendar_24"
             app:startIconTint="@color/blue_500"
             app:errorEnabled="true">
@@ -66,7 +66,7 @@
             <com.google.android.material.textfield.TextInputEditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:lines="1"
+                android:singleLine="true"
                 android:inputType="date"
                 android:focusable="false" />
 
@@ -81,7 +81,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
-            android:hint="Heure de début"
+            android:hint="@string/hint_meeting_startTime"
             app:startIconDrawable="@drawable/ic_outline_access_time_24"
             app:startIconTint="@color/blue_500"
             app:errorEnabled="true">
@@ -89,7 +89,7 @@
             <com.google.android.material.textfield.TextInputEditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:lines="1"
+                android:singleLine="true"
                 android:inputType="time"
                 android:focusable="false" />
 
@@ -112,7 +112,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginEnd="8dp"
-            android:hint="Heure de fin"
+            android:hint="@string/hint_meeting_endTime"
             app:startIconDrawable="@drawable/ic_outline_access_time_24"
             app:startIconTint="@color/blue_500"
             app:errorEnabled="true">
@@ -120,7 +120,7 @@
             <com.google.android.material.textfield.TextInputEditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:lines="1"
+                android:singleLine="true"
                 android:inputType="time"
                 android:focusable="false" />
 
@@ -134,7 +134,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="8dp"
-            android:hint="Salle"
+            android:hint="@string/hint_meeting_room"
             app:startIconDrawable="@drawable/ic_outline_meeting_room_24"
             app:startIconTint="@color/blue_500"
             app:errorEnabled="true">
@@ -144,7 +144,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:inputType="none"
-                android:hint="Salle" />
+                android:hint="" />
 
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -157,13 +157,13 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
-            android:hint="Ajouter un participant"
+            android:hint="@string/hint_participant_add"
             app:startIconDrawable="@drawable/ic_outline_create_24"
             app:startIconTint="@color/blue_500"
             app:endIconDrawable="@drawable/ic_baseline_cancel_24"
             app:endIconTint="@color/red"
             app:endIconMode="clear_text"
-            app:helperText="Saisir une adresse email"
+            app:helperText="@string/helper_participant_add"
             app:errorEnabled="true">
 
             <com.google.android.material.textfield.TextInputEditText
@@ -194,7 +194,7 @@
             android:layout_marginHorizontal="8dp"
             android:background="@color/blue_500"
             android:textColor="@color/white"
-            android:text="Participants"
+            android:text="@string/title_participants_list"
             android:textSize="14sp"
             android:gravity="bottom"
             android:paddingVertical="4dp"
@@ -239,16 +239,17 @@
                 style="@style/Widget.MaterialComponents.Button.Icon"
                 app:layout_constraintTop_toBottomOf="@id/list_participants_layout"
                 app:layout_constraintStart_toStartOf="parent"
-                android:layout_width="104dp"
+                android:layout_width="100dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="12dp"
                 android:layout_marginBottom="12dp"
                 android:layout_marginHorizontal="0dp"
-                android:text="Retour"
+                android:text="@string/button_return_text"
                 android:gravity="center"
                 android:layout_weight="1"
                 android:layout_gravity="center"
                 android:paddingStart="4dp"
+                android:paddingEnd="16dp"
                 app:icon="@drawable/ic_baseline_cancel_24"
                 app:iconTint="@color/red"
                 app:iconSize="28dp" />
@@ -263,16 +264,17 @@
                 style="@style/Widget.MaterialComponents.Button.Icon"
                 app:layout_constraintTop_toBottomOf="@id/list_participants_layout"
                 app:layout_constraintEnd_toEndOf="parent"
-                android:layout_width="104dp"
+                android:layout_width="100dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="12dp"
                 android:layout_marginBottom="12dp"
                 android:layout_marginHorizontal="0dp"
-                android:text="Planifier"
+                android:text="@string/button_create_meeting_text"
                 android:gravity="center"
                 android:layout_weight="1"
                 android:layout_gravity="center"
                 android:paddingStart="4dp"
+                android:paddingEnd="12dp"
                 app:icon="@drawable/ic_baseline_check_circle_24"
                 app:iconTint="@color/green"
                 app:iconSize="28dp" />

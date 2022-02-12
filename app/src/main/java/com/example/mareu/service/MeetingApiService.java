@@ -46,12 +46,6 @@ public interface MeetingApiService {
     List<Meeting> getMeetingsByDate(String date);
 
     /**
-     * Get list of participants emails
-     * @return @String
-     */
-    // CharSequence[] getParticipantsList(Meeting meeting); // TODO : A supprimer
-
-    /**
      * Deletes a Meeting
      * @param meeting
      */
