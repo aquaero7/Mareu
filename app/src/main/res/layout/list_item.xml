@@ -8,5 +8,6 @@
     android:textStyle="bold"
     android:textSize="14sp"
     android:gravity="center_vertical"
+    android:singleLine="true"
     />
 

@@ -215,12 +215,12 @@ public class ListMeetingsActivity extends AppCompatActivity {
         if (byDate && !byRoom) {
             filterIsSetOnDate = true;
             filterIsSetOnRoom = false;
-            mListMeetingsBinding.toolBarMain.setTitle("Toutes les réunions du " + dfDateLong.format(mDate));
+            mListMeetingsBinding.header.setText("Toutes les réunions du " + dfDateLong.format(mDate));
         }
         else if (!byDate && byRoom) {
             filterIsSetOnDate = false;
             filterIsSetOnRoom = true;
-            mListMeetingsBinding.toolBarMain.setTitle("Toutes les réunions de la salle " + mRoom.getName());
+            mListMeetingsBinding.header.setText("Toutes les réunions de la salle " + mRoom.getName());
         }
         else if (byDate && byRoom) {
             filterIsSetOnDate = true;
@@ -230,7 +230,7 @@ public class ListMeetingsActivity extends AppCompatActivity {
         else {
             filterIsSetOnDate = false;
             filterIsSetOnRoom = false;
-            mListMeetingsBinding.toolBarMain.setTitle("Toutes les réunions");
+            mListMeetingsBinding.header.setText("Toutes les réunions");
         }
     }
     // Fin Actions selon sélection dans menu ------------------------------------------------------
