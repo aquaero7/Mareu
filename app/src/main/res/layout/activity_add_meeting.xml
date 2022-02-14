@@ -100,7 +100,7 @@
             app:layout_constraintTop_toBottomOf="@id/date_meeting_layout"
             app:layout_constraintStart_toEndOf="@id/start_time_meeting_layout"
             app:layout_constraintEnd_toStartOf="@id/end_time_meeting_layout"
-            android:layout_width="40dp"
+            android:layout_width="32dp"
             android:layout_height="0dp" />
 
         <com.google.android.material.textfield.TextInputLayout

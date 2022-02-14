@@ -44,7 +44,7 @@ public class ListMeetingsActivity extends AppCompatActivity {
     private MeetingApiService mMeetingApiService = DI.getMeetingApiService();
     private Date mDate;         // Date du filtre
     private Room mRoom = null;  // Salle du filtre (aucune par défaut)
-    private Boolean filterIsSetOnDate = true, filterIsSetOnRoom = false;
+    private boolean filterIsSetOnDate = true, filterIsSetOnRoom = false;
     private SimpleDateFormat dfDate = new SimpleDateFormat("dd/MM/yyyy", Locale.FRANCE);
     private SimpleDateFormat dfDateLong = new SimpleDateFormat("dd MMMM yyyy", Locale.FRANCE);
     private Calendar now;
