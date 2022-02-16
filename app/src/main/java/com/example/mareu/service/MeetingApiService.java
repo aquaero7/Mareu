@@ -1,11 +1,8 @@
 package com.example.mareu.service;
 
 import com.example.mareu.model.Meeting;
-import com.example.mareu.model.ReservationSlot;
 import com.example.mareu.model.Room;
 
-import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -14,6 +11,8 @@ import java.util.List;
 public interface MeetingApiService {
 
     /* Methods about Meeting */
+
+    // Get methods
 
     /**
      * Get all my Meetings
@@ -45,19 +44,6 @@ public interface MeetingApiService {
      */
     List<Meeting> getMeetingsByDate(String date);
 
-    /**
-     * Deletes a Meeting
-     * @param meeting
-     */
-    void deleteMeeting(Meeting meeting);
-
-    /**
-     * Create a Meeting
-     * @param meeting
-     */
-    void createMeeting(Meeting meeting);
-
-
     /* Methods about Rooms */
 
     /**
@@ -85,6 +71,21 @@ public interface MeetingApiService {
     CharSequence[] getRoomsList();
 
 
+    // Creation ans deletion methods
+
+    /**
+     * Deletes a Meeting
+     * @param meeting
+     */
+    void deleteMeeting(Meeting meeting);
+
+    /**
+     * Create a Meeting
+     * @param meeting
+     */
+    void createMeeting(Meeting meeting);
+
+
     /* Methods about ReservationSlots for a room */
 
     /**
@@ -99,6 +100,8 @@ public interface MeetingApiService {
      */
     public void createRoomReservationSlot(Meeting meeting);
 
+
+    // Sort methods
 
     /**
      * Sort meetings list by date

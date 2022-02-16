@@ -1,7 +1,5 @@
 package com.example.mareu.model;
 
-import java.time.LocalDateTime;
-import java.util.Date;
 
 /**
  * Model object representing a Reservation Slot

@@ -2,8 +2,7 @@ package com.example.mareu.model;
 
 import androidx.annotation.NonNull;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
@@ -28,13 +27,12 @@ public class Room {
     private List<ReservationSlot> mReservationSlots;
 
 
-
     public Room(int id, String name, int capacity, int color, List<ReservationSlot> reservationSlots) {
         mId = id;
         mName = name;
         mCapacity = capacity;
         mColor = color;
-        mReservationSlots = reservationSlots;
+        mReservationSlots = new ArrayList<>(reservationSlots);
     }
 
     public int getId() {
@@ -77,7 +75,7 @@ public class Room {
         mReservationSlots = reservationSlots;
     }
 
-    public void deleteReservationSlot(ReservationSlot reservationSlot) {
+    public void removeReservationSlot(ReservationSlot reservationSlot) {
         mReservationSlots.remove(reservationSlot);
     }
 
@@ -96,13 +94,10 @@ public class Room {
     // Création du comparateur pour le tri
     public static Comparator<Room> ComparatorName = new Comparator<Room>() {
         @Override
-        public int compare(Room o1, Room o2) {
+        public int compare(@NonNull Room o1, @NonNull Room o2) {
             return o1.getName().compareTo(o2.getName());    // Tri croissant
             // return o2.getName().compareTo(o1.getName());    // Tri décroissant
         }
     };
-
-
-
 
 }

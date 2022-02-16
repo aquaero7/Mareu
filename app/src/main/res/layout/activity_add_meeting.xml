@@ -24,7 +24,8 @@
             android:background="@color/blue_500"
             android:gravity="center"
             android:layout_gravity="center"
-            android:padding="4dp" />
+            android:padding="4dp"
+            android:focusable="false" />
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/name_meeting_layout"
@@ -41,12 +42,16 @@
             app:endIconDrawable="@drawable/ic_baseline_cancel_24"
             app:endIconTint="@color/red"
             app:endIconMode="clear_text"
-            app:errorEnabled="true">
+            app:errorEnabled="true"
+            android:focusable="true"
+            android:nextFocusUp="@id/button_create_meeting"
+            android:nextFocusDown="@id/date_meeting_layout">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:singleLine="true" />
+                android:singleLine="true"
+                android:focusable="true"/>
 
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -61,7 +66,10 @@
             android:hint="@string/hint_meeting_date"
             app:startIconDrawable="@drawable/ic_outline_edit_calendar_24"
             app:startIconTint="@color/blue_500"
-            app:errorEnabled="true">
+            app:errorEnabled="true"
+            android:focusable="true"
+            android:nextFocusUp="@id/name_meeting_layout"
+            android:nextFocusDown="@id/start_time_meeting_layout">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:layout_width="match_parent"
@@ -84,7 +92,10 @@
             android:hint="@string/hint_meeting_startTime"
             app:startIconDrawable="@drawable/ic_outline_access_time_24"
             app:startIconTint="@color/blue_500"
-            app:errorEnabled="true">
+            app:errorEnabled="true"
+            android:focusable="true"
+            android:nextFocusUp="@id/date_meeting_layout"
+            android:nextFocusDown="@id/end_time_meeting_layout">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:layout_width="match_parent"
@@ -101,7 +112,8 @@
             app:layout_constraintStart_toEndOf="@id/start_time_meeting_layout"
             app:layout_constraintEnd_toStartOf="@id/end_time_meeting_layout"
             android:layout_width="32dp"
-            android:layout_height="0dp" />
+            android:layout_height="0dp"
+            android:focusable="false"/>
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/end_time_meeting_layout"
@@ -115,7 +127,10 @@
             android:hint="@string/hint_meeting_endTime"
             app:startIconDrawable="@drawable/ic_outline_access_time_24"
             app:startIconTint="@color/blue_500"
-            app:errorEnabled="true">
+            app:errorEnabled="true"
+            android:focusable="true"
+            android:nextFocusUp="@id/start_time_meeting_layout"
+            android:nextFocusDown="@id/room_meeting_layout">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:layout_width="match_parent"
@@ -137,14 +152,18 @@
             android:hint="@string/hint_meeting_room"
             app:startIconDrawable="@drawable/ic_outline_meeting_room_24"
             app:startIconTint="@color/blue_500"
-            app:errorEnabled="true">
+            app:errorEnabled="true"
+            android:focusable="true"
+            android:nextFocusUp="@id/end_time_meeting_layout"
+            android:nextFocusDown="@id/add_participant_layout">
 
             <AutoCompleteTextView
                 android:id="@+id/room_meeting_textView"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:inputType="none"
-                android:hint="" />
+                android:hint=""
+                android:focusable="true" />
 
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -164,12 +183,16 @@
             app:endIconTint="@color/red"
             app:endIconMode="clear_text"
             app:helperText="@string/helper_participant_add"
-            app:errorEnabled="true">
+            app:errorEnabled="true"
+            android:focusable="true"
+            android:nextFocusUp="@id/room_meeting_layout"
+            android:nextFocusDown="@id/button_add_participant">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:singleLine="true" />
+                android:singleLine="true"
+                android:focusable="true" />
 
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -182,7 +205,10 @@
             android:layout_marginEnd="8dp"
             android:src="@drawable/ic_outline_group_add_24"
             android:backgroundTint="@color/blue_500"
-            app:tint="@color/white" />
+            app:tint="@color/white"
+            android:focusable="true"
+            android:nextFocusUp="@id/add_participant_layout"
+            android:nextFocusDown="@id/participants_listView" />
 
         <TextView
             android:id="@+id/list_participants_title_layout"
@@ -198,7 +224,8 @@
             android:textSize="14sp"
             android:gravity="bottom"
             android:paddingVertical="4dp"
-            android:paddingHorizontal="12dp" />
+            android:paddingHorizontal="12dp"
+            android:focusable="false" />
 
         <LinearLayout
             android:id="@+id/list_participants_layout"
@@ -218,7 +245,10 @@
                 android:scrollbarSize="12dp"
                 android:scrollbarStyle="outsideInset"
                 android:background="@drawable/sh_listview_background"
-                android:nestedScrollingEnabled="true" />
+                android:nestedScrollingEnabled="true"
+                android:focusable="true"
+                android:nextFocusUp="@id/button_add_participant"
+                android:nextFocusDown="@id/button_return" />
 
         </LinearLayout>
 
@@ -232,7 +262,8 @@
             <TextView
                 android:layout_width="0dp"
                 android:layout_height="0dp"
-                android:layout_weight="1"/>
+                android:layout_weight="1"
+                android:focusable="false" />
 
             <Button
                 android:id="@+id/button_return"
@@ -252,12 +283,16 @@
                 android:paddingEnd="16dp"
                 app:icon="@drawable/ic_baseline_cancel_24"
                 app:iconTint="@color/red"
-                app:iconSize="28dp" />
+                app:iconSize="28dp"
+                android:focusable="true"
+                android:nextFocusUp="@id/participants_listView"
+                android:nextFocusDown="@id/button_create_meeting" />
 
             <TextView
                 android:layout_width="0dp"
                 android:layout_height="0dp"
-                android:layout_weight="1"/>
+                android:layout_weight="1"
+                android:focusable="false" />
 
             <Button
                 android:id="@+id/button_create_meeting"
@@ -277,12 +312,16 @@
                 android:paddingEnd="12dp"
                 app:icon="@drawable/ic_baseline_check_circle_24"
                 app:iconTint="@color/green"
-                app:iconSize="28dp" />
+                app:iconSize="28dp"
+                android:focusable="true"
+                android:nextFocusUp="@id/button_return"
+                android:nextFocusDown="@id/name_meeting_layout" />
 
             <TextView
                 android:layout_width="0dp"
                 android:layout_height="0dp"
-                android:layout_weight="1"/>
+                android:layout_weight="1"
+                android:focusable="false" />
 
         </LinearLayout>
 

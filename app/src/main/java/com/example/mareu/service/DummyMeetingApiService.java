@@ -3,6 +3,7 @@ package com.example.mareu.service;
 import com.example.mareu.model.Meeting;
 import com.example.mareu.model.ReservationSlot;
 import com.example.mareu.model.Room;
+import com.example.mareu.ui.AddMeetingActivity;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -10,8 +11,11 @@ import java.util.List;
 
 public class DummyMeetingApiService implements MeetingApiService {
 
-    private List<Meeting> meetings = getDummyMeetings();
+    private List<Meeting> meetings = meetings = getDummyMeetings();
     private List<Room> rooms = getDummyRooms();
+
+
+    // Get methods
 
     @Override
     public List<Meeting> getDummyMeetings() {
@@ -56,18 +60,6 @@ public class DummyMeetingApiService implements MeetingApiService {
     }
 
     @Override
-    public void deleteMeeting(Meeting meeting) {
-        deleteRoomReservationSlot(meeting);
-        meetings.remove(meeting);
-    }
-
-    @Override
-    public void createMeeting(Meeting meeting) {
-        createRoomReservationSlot(meeting);
-        meetings.add(meeting);
-    }
-
-    @Override
     public List<Room> getRooms() {
         // return rooms;   // Unsorted
         return sortRoomsByName(rooms);  // Sorted
@@ -97,10 +89,36 @@ public class DummyMeetingApiService implements MeetingApiService {
     public CharSequence[] getRoomsList() {
         CharSequence[] roomsList = new CharSequence[rooms.size()];
         for (int i = 0; i < rooms.size(); i++) {
-            // roomsList[i] = rooms.get(i).getName();
+            // roomsList[i] = rooms.get(i).getName();   // Pour récupérer seulement le nom
             roomsList[i] = rooms.get(i).toString();    // Pour récupérer nom + capacité
         }
         return roomsList;
+    }
+
+
+    // Creation ans deletion methods
+
+    @Override
+    public void deleteMeeting(Meeting meeting) {
+        deleteRoomReservationSlot(meeting);
+
+        try {
+            meetings.remove(meeting);
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.out.println("Exception dans " + getClass() + " / " + this + " : " + e.getMessage());
+        }
+    }
+
+    @Override
+    public void createMeeting(Meeting meeting) {
+        createRoomReservationSlot(meeting);
+        try {
+            meetings.add(meeting);
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.out.println("Exception dans " + getClass() + " / " + this + " : " + e.getMessage());
+        }
     }
 
     @Override
@@ -113,11 +131,12 @@ public class DummyMeetingApiService implements MeetingApiService {
 
             for (ReservationSlot slot : slotRoom.getReservationSlots()) {
                 if (slot.getDate().equals(slotDate) && slot.getStart().equals(slotStart) && slot.getEnd().equals(slotEnd)) {
-                    slotRoom.deleteReservationSlot(slot);
+                    slotRoom.removeReservationSlot(slot);
                 }
             }
         } catch (Exception e) {
             e.printStackTrace();
+            System.out.println("Exception dans " + getClass() + " / " + this + " : " + e.getMessage());
         }
     }
 
@@ -129,8 +148,12 @@ public class DummyMeetingApiService implements MeetingApiService {
             slotRoom.addReservationSlot(slot);
         } catch (Exception e) {
             e.printStackTrace();
+            System.out.println("Exception dans " + getClass() + " / " + this + " : " + e.getMessage());
         }
     }
+
+
+    // Sort methods
 
     @Override
     public List<Meeting> sortMeetingsByDate(List<Meeting> meetings) {

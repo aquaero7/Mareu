@@ -10,7 +10,6 @@ import android.app.DatePickerDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -38,17 +37,15 @@ import java.util.List;
 import java.util.Locale;
 
 public class ListMeetingsActivity extends AppCompatActivity {
-    // Initialisation des variables ---------------------------------------------------------------
+
     private ActivityListMeetingsBinding mListMeetingsBinding;
     private List<Meeting> mMeetings;
-    private MeetingApiService mMeetingApiService = DI.getMeetingApiService();
+    private final MeetingApiService mMeetingApiService = DI.getMeetingApiService();
     private Date mDate;         // Date du filtre
     private Room mRoom = null;  // Salle du filtre (aucune par défaut)
     private boolean filterIsSetOnDate = true, filterIsSetOnRoom = false;
-    private SimpleDateFormat dfDate = new SimpleDateFormat("dd/MM/yyyy", Locale.FRANCE);
-    private SimpleDateFormat dfDateLong = new SimpleDateFormat("dd MMMM yyyy", Locale.FRANCE);
-    private Calendar now;
-    // Fin Initialisation des variables -----------------------------------------------------------
+    private final SimpleDateFormat dfDate = new SimpleDateFormat("dd/MM/yyyy", Locale.FRANCE);
+    private final SimpleDateFormat dfDateLong = new SimpleDateFormat("EEEE dd MMMM yyyy", Locale.FRANCE);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -102,7 +99,9 @@ public class ListMeetingsActivity extends AppCompatActivity {
         else if (filterIsSetOnDate && filterIsSetOnRoom) {
             mMeetings = new ArrayList<>(mMeetingApiService.getMeetings());  // Cas non implémenté
         }
-        else { mMeetings = new ArrayList<>(mMeetingApiService.getMeetings()); }
+        else {
+            mMeetings = new ArrayList<>(mMeetingApiService.getMeetings());
+        }
     }
 
     private void createRecyclerView() {
@@ -136,22 +135,22 @@ public class ListMeetingsActivity extends AppCompatActivity {
     // Actions selon sélection dans menu ----------------------------------------------------------
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.filter_date:
-                dateDialog();
-                return true;
-            case R.id.filter_place:
-                meetingDialog();
-                return true;
-            case R.id.filters_reset:
-                resetfilters();
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
+        if (item.getItemId() == R.id.filter_date) {
+            dateDialog();
+            return true;
+        } else if (item.getItemId() == R.id.filter_place) {
+            meetingDialog();
+            return true;
+        } else if (item.getItemId() == R.id.filters_reset) {
+            resetFilters();
+            return true;
+        } else {
+            return super.onOptionsItemSelected(item);
         }
+
     }
 
-    private void resetfilters() {
+    private void resetFilters() {
         mMeetings.clear();
         mMeetings.addAll(mMeetingApiService.getMeetings());
         if (mListMeetingsBinding.recyclerView.getAdapter() != null) {
@@ -163,7 +162,7 @@ public class ListMeetingsActivity extends AppCompatActivity {
 
     private void meetingDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle(R.string.hint_meeting_room);
+        builder.setTitle(getString(R.string.hint_meeting_room));
         builder.setItems(mMeetingApiService.getRoomsList(), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
@@ -198,8 +197,8 @@ public class ListMeetingsActivity extends AppCompatActivity {
             }
         };
 
-        // Create DatePickerDialog (Spinner mode)
-        now = Calendar.getInstance();
+        // Create DatePickerDialog
+        Calendar now = Calendar.getInstance();
         int selectedYear = now.get(Calendar.YEAR);
         int selectedMonth = now.get(Calendar.MONTH);
         int selectedDayOfMonth = now.get(Calendar.DAY_OF_MONTH);
@@ -249,7 +248,8 @@ public class ListMeetingsActivity extends AppCompatActivity {
             Toast.makeText(this, "La réunion \" " + event.meeting.getName() + "\" a été supprimée", Toast.LENGTH_SHORT).show();
         } catch (Exception e) {
             e.printStackTrace();
-            System.out.println("Error " + e.getMessage());
+            System.out.println("Exception in " + getClass() + " / " + this + " : " + e.getMessage());
+            Toast.makeText(this, getString(R.string.exception_deleteMeeting) + " \"" + event.meeting.getName() + "\"", Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -259,9 +259,6 @@ public class ListMeetingsActivity extends AppCompatActivity {
      */
     @Subscribe
     public void onCreateMeeting(CreateMeetingEvent event) {
-
-        Log.d("ListMeetingsActivity", "event de création reçu pour " + event.meeting.getName());
-
         try {
             mMeetingApiService.createMeeting(event.meeting);
             initList();
@@ -269,7 +266,8 @@ public class ListMeetingsActivity extends AppCompatActivity {
             Toast.makeText(this, "La réunion \" " + event.meeting.getName() + "\" a été créée", Toast.LENGTH_SHORT).show();
         } catch (Exception e) {
             e.printStackTrace();
-            System.out.println("Error " + e.getMessage());
+            System.out.println("Exception in " + getClass() + " / " + this + " : " + e.getMessage());
+            Toast.makeText(this, getString(R.string.exception_createMeeting) + " \"" + event.meeting.getName() + "\"", Toast.LENGTH_SHORT).show();
         }
     }
     // Fin Abonnement aux events de l'EventBus ----------------------------------------------------

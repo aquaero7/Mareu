@@ -19,7 +19,7 @@
     <string name="error_meeting_name">Saisir le nom de la réunion !</string>
     <string name="error_meeting_date">Choisir une date !</string>
     <string name="error_meeting_time">Choisir une heure !</string>
-    <string name="error_meeting_endtime">Heure de fin incorrecte !</string>
+    <string name="error_meeting_endTime">Heure de fin incorrecte !</string>
     <string name="error_meeting_room">Choisir une salle !</string>
     <string name="error_email">L\'adresse eMail est incorrecte !</string>
     <string name="error_slot">La salle n\'est pas disponible sur ce créneau !</string>
@@ -29,6 +29,12 @@
     <string name="alertDialog_empty_participants_list">La liste des participants est vide !\nPlanifier quand même ?</string>
     <string name="button_return_text">Retour</string>
     <string name="button_create_meeting_text">Planifier</string>
+    <string name="exception_deleteMeeting">Erreur de suppression de la réunion</string>
+    <string name="exception_createMeeting">Erreur de création de la réunion</string>
+    <string name="exception_format_date">Erreur de format de date</string>
+    <string name="exception_format_start">Erreur de format de l\'heure de début</string>
+    <string name="exception_format_end">Erreur de format de l\'heure de fin</string>
+
     <string name="item">item</string>
     
     <string-array name="meeting_rooms">
