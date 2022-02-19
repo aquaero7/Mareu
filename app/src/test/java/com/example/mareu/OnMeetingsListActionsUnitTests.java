@@ -4,6 +4,7 @@ import static org.junit.Assert.*;
 
 import com.example.mareu.di.DI;
 import com.example.mareu.model.Meeting;
+import com.example.mareu.model.Room;
 import com.example.mareu.service.MeetingApiService;
 
 import org.hamcrest.MatcherAssert;
@@ -18,7 +19,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
-public class ListMeetingsUnitTest {
+public class OnMeetingsListActionsUnitTests {
 
     private final MeetingApiService service = DI.getMeetingApiService();
     private final List<Meeting> myDummyList = service.getDummyMeetings();
@@ -118,6 +119,26 @@ public class ListMeetingsUnitTest {
                 e.printStackTrace();
                 System.out.println("ParseException in " + getClass() + " / " + this + " : " + e.getMessage());
             }
+        }
+    }
+
+    @Test
+    public void filterMeetingsByDateWithSuccess() {
+        String dateFilter = "23/02/2022";
+        List<Meeting> filteredMeetings = service.getMeetingsByDate(dateFilter);
+
+        for (Meeting mMeeting : filteredMeetings) {
+            assertEquals(dateFilter,mMeeting.getDate());
+        }
+    }
+
+    @Test
+    public void filterMeetingsByPlaceWithSuccess() {
+        Room roomFilter = service.getDummyRooms().get(0);
+        List<Meeting> filteredMeetings = service.getMeetingsByPlace(roomFilter);
+
+        for (Meeting mMeeting : filteredMeetings) {
+            assertEquals(roomFilter,mMeeting.getRoom());
         }
     }
 

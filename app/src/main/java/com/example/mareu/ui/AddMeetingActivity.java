@@ -7,6 +7,7 @@ import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
@@ -30,7 +31,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
 
-public class AddMeetingActivity extends AppCompatActivity implements View.OnClickListener, View.OnTouchListener {
+public class AddMeetingActivity extends AppCompatActivity implements View.OnClickListener, View.OnTouchListener, View.OnFocusChangeListener {
 
     private ArrayAdapter participantsListAdapter;
     private final MeetingApiService mMeetingApiService = DI.getMeetingApiService();
@@ -91,11 +92,13 @@ public class AddMeetingActivity extends AppCompatActivity implements View.OnClic
     // Init listeners -----------------------------------------------------------------------------
     private void initListeners() {
         nameLyt.getEditText().setOnTouchListener(this);
+        nameLyt.getEditText().setOnFocusChangeListener(this);
         Objects.requireNonNull(dateLyt.getEditText()).setOnClickListener(this);
         Objects.requireNonNull(startTimeLyt.getEditText()).setOnClickListener(this);
         Objects.requireNonNull(endTimeLyt.getEditText()).setOnClickListener(this);
         Objects.requireNonNull(roomLyt.getEditText()).setOnClickListener(this);
         Objects.requireNonNull(addParticipantLyt.getEditText()).setOnClickListener(this);
+        addParticipantLyt.getEditText().setOnFocusChangeListener(this);
         addParticipantButton.setOnClickListener(this);
         returnButton.setOnClickListener(this);
         createMeetingButton.setOnClickListener(this);
@@ -127,6 +130,12 @@ public class AddMeetingActivity extends AppCompatActivity implements View.OnClic
         if (v == nameLyt.getEditText()) { nameLyt.setError(""); }
         return false;
     }
+
+    @Override
+    public void onFocusChange(View v, boolean hasFocus) {
+        if (v == nameLyt.getEditText() && !hasFocus) { hideVirtualKeyboard(nameLyt); }
+        if (v == addParticipantLyt.getEditText() && !hasFocus) { hideVirtualKeyboard(addParticipantLyt); }
+    }
     // Fin Init listeners -------------------------------------------------------------------------
 
     public void addParticipant() {
@@ -134,6 +143,7 @@ public class AddMeetingActivity extends AppCompatActivity implements View.OnClic
         boolean mailOK = MeetingToolbox.checkMail(mailAddress);
 
         if (mailOK) {
+            hideVirtualKeyboard(addParticipantButton);
             participantsList.add(addParticipantLyt.getEditText().getText().toString().toLowerCase(Locale.ROOT));
             participantsListAdapter.notifyDataSetChanged();
             addParticipantLyt.getEditText().getText().clear();
@@ -200,6 +210,11 @@ public class AddMeetingActivity extends AppCompatActivity implements View.OnClic
                 .show();
     }
 
+    public void hideVirtualKeyboard(View v) {
+        InputMethodManager imm = (InputMethodManager)getSystemService(INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(v.getApplicationWindowToken(), 0);
+    }
+
     public void scheduleMeeting() {
         Meeting meetingToSchedule = new Meeting(System.currentTimeMillis(),
                 nameText, selectedDate, selectedStart, selectedEnd, selectedRoom, participantsList);
@@ -220,4 +235,5 @@ public class AddMeetingActivity extends AppCompatActivity implements View.OnClic
 
         finish();
     }
+
 }
