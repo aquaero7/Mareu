@@ -48,6 +48,7 @@
             android:nextFocusDown="@id/date_meeting_layout">
 
             <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/name_meeting_textView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:singleLine="true"
@@ -72,6 +73,7 @@
             android:nextFocusDown="@id/start_time_meeting_layout">
 
             <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/date_meeting_textView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:singleLine="true"
@@ -98,6 +100,7 @@
             android:nextFocusDown="@id/end_time_meeting_layout">
 
             <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/start_time_meeting_textView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:singleLine="true"
@@ -133,6 +136,7 @@
             android:nextFocusDown="@id/room_meeting_layout">
 
             <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/end_time_meeting_textView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:singleLine="true"
@@ -189,6 +193,7 @@
             android:nextFocusDown="@id/button_add_participant">
 
             <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/add_participant_textView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:singleLine="true"
