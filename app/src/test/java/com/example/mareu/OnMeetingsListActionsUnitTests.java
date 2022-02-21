@@ -19,6 +19,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
+// @RunWith(AndroidJUnit4.class)
 public class OnMeetingsListActionsUnitTests {
 
     private final MeetingApiService service = DI.getMeetingApiService();

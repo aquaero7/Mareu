@@ -245,7 +245,8 @@ public class ListMeetingsActivity extends AppCompatActivity {
             mMeetingApiService.deleteMeeting(event.meeting);
             initList();
             initRecyclerView();
-            Toast.makeText(this, "La réunion \" " + event.meeting.getName() + "\" a été supprimée", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "La réunion \"" + event.meeting.getName() + "\" a été supprimée !", Toast.LENGTH_SHORT).show();
+
         } catch (Exception e) {
             e.printStackTrace();
             System.out.println("Exception in " + getClass() + " / " + this + " : " + e.getMessage());
@@ -263,7 +264,7 @@ public class ListMeetingsActivity extends AppCompatActivity {
             mMeetingApiService.createMeeting(event.meeting);
             initList();
             initRecyclerView();
-            Toast.makeText(this, "La réunion \" " + event.meeting.getName() + "\" a été créée", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "La réunion \"" + event.meeting.getName() + "\" a été créée !", Toast.LENGTH_SHORT).show();
         } catch (Exception e) {
             e.printStackTrace();
             System.out.println("Exception in " + getClass() + " / " + this + " : " + e.getMessage());

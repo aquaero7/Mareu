@@ -18,8 +18,7 @@
         android:textColor="@color/white"
         android:background="@color/blue_500"
         android:gravity="center|top"
-        android:padding="4dp"
-        />
+        android:padding="4dp" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerView"
@@ -29,8 +28,7 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:paddingVertical="4dp"
-        tools:listitem="@layout/fragment_meeting"
-        />
+        tools:listitem="@layout/fragment_meeting" />
 
     <TextView
         android:id="@+id/footer"
@@ -40,8 +38,7 @@
         android:layout_height="0dp"
         android:text=""
         android:gravity="center"
-        android:paddingVertical="0dp"
-        />
+        android:paddingVertical="0dp" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/addMeetingButton"

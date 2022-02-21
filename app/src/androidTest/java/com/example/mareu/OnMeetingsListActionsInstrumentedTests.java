@@ -36,6 +36,7 @@ import com.example.mareu.di.DI;
 import com.example.mareu.service.MeetingApiService;
 import com.example.mareu.ui.ListMeetingsActivity;
 
+// @RunWith(AndroidJUnit4.class)
 public class OnMeetingsListActionsInstrumentedTests {
 
     private final MeetingApiService service = DI.getMeetingApiService();

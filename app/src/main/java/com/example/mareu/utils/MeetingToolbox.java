@@ -105,6 +105,7 @@ public class MeetingToolbox {
                 calD.set(Calendar.DAY_OF_MONTH, dayOfMonth);
                 mDate = calD.getTime();
                 Objects.requireNonNull(mDateLyt.getEditText()).setText(dfDateLong.format(mDate));
+                mDateLyt.setError("");
             }
         };
 
@@ -151,6 +152,7 @@ public class MeetingToolbox {
                 mTime = calH.getTime();
                 if (mStart) {
                     Objects.requireNonNull(mStartTimeLyt.getEditText()).setText(dfTime.format(mTime).replace(":", "h"));
+                    mStartTimeLyt.setError("");
 
                     // Preset end time calculated with default duration
                     if (Objects.requireNonNull(mEndTimeLyt.getEditText()).getText().toString().isEmpty()) {
@@ -159,10 +161,12 @@ public class MeetingToolbox {
                         calH2.add(Calendar.MINUTE,  DEFAULT_MEETING_DURATION_IN_MIN);
                         Date mTime2 = calH2.getTime();
                         mEndTimeLyt.getEditText().setText(dfTime.format(mTime2).replace(":", "h"));
+                        mEndTimeLyt.setError("");
                     }
                 }
                 if (mEnd) {
                     Objects.requireNonNull(mEndTimeLyt.getEditText()).setText(dfTime.format(mTime).replace(":", "h"));
+                    mEndTimeLyt.setError("");
                 }
             }
         };
@@ -207,6 +211,17 @@ public class MeetingToolbox {
 
         // Show DatePickerDialog
         timePickerDialog.show();
+    }
+
+    public static void clearErrorFields(TextInputLayout nameLyt, TextInputLayout dateLyt,
+                                        TextInputLayout startTimeLyt, TextInputLayout endTimeLyt,
+                                        TextInputLayout roomLyt, TextInputLayout addParticipantLyt) {
+        nameLyt.setError("");
+        dateLyt.setError("");
+        startTimeLyt.setError("");
+        endTimeLyt.setError("");
+        roomLyt.setError("");
+        addParticipantLyt.setError("");
     }
 
 }

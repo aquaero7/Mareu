@@ -5,15 +5,15 @@
     android:id="@+id/fragmentMeeting"
     android:layout_width="match_parent"
     android:layout_height="64dp"
-    android:orientation="horizontal">
+    android:orientation="horizontal"
+    android:focusable="true">
 
     <androidx.cardview.widget.CardView
         android:id="@+id/colorMeeting"
         android:layout_width="48dp"
         android:layout_height="match_parent"
         android:layout_margin="@dimen/object_margin"
-        app:cardCornerRadius="30dp"
-        />
+        app:cardCornerRadius="30dp" />
 
     <LinearLayout
         android:id="@+id/dataMeeting"
@@ -39,8 +39,7 @@
                 android:gravity="start|bottom"
                 android:paddingTop="4dp"
                 android:paddingHorizontal="8dp"
-                android:ellipsize="end"
-                />
+                android:ellipsize="end" />
 
             <TextView
                 android:id="@+id/line2"
@@ -58,8 +57,7 @@
                 android:gravity="start|top"
                 android:paddingBottom="4dp"
                 android:paddingHorizontal="8dp"
-                android:ellipsize="end"
-                />
+                android:ellipsize="end" />
 
     </LinearLayout>
 
@@ -72,6 +70,6 @@
         android:layout_marginStart="0dp"
         android:layout_marginEnd="0dp"
         android:src="@drawable/ic_baseline_delete_black_24"
-        android:backgroundTint="@color/transparent"/>
+        android:backgroundTint="@color/transparent" />
 
 </LinearLayout>

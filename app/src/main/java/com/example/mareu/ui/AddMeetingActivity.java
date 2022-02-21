@@ -1,5 +1,12 @@
 package com.example.mareu.ui;
 
+import static com.example.mareu.utils.MeetingToolbox.checkFields;
+import static com.example.mareu.utils.MeetingToolbox.checkMail;
+import static com.example.mareu.utils.MeetingToolbox.checkSlot;
+import static com.example.mareu.utils.MeetingToolbox.clearErrorFields;
+import static com.example.mareu.utils.MeetingToolbox.dateSetting;
+import static com.example.mareu.utils.MeetingToolbox.timeSetting;
+
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -21,7 +28,6 @@ import com.example.mareu.di.DI;
 import com.example.mareu.model.Meeting;
 import com.example.mareu.model.Room;
 import com.example.mareu.service.MeetingApiService;
-import com.example.mareu.utils.MeetingToolbox;
 import com.google.android.material.textfield.TextInputLayout;
 
 import java.text.ParseException;
@@ -106,18 +112,9 @@ public class AddMeetingActivity extends AppCompatActivity implements View.OnClic
 
     @Override
     public void onClick(View v) {
-        if (v == dateLyt.getEditText()) {
-            dateLyt.setError("");
-            MeetingToolbox.dateSetting(dateLyt, this);
-        }
-        if (v == startTimeLyt.getEditText()) {
-            startTimeLyt.setError("");
-            MeetingToolbox.timeSetting(true, false, startTimeLyt, endTimeLyt, this);
-        }
-        if (v == endTimeLyt.getEditText()) {
-            endTimeLyt.setError("");
-            MeetingToolbox.timeSetting(false, true, startTimeLyt, endTimeLyt, this);
-        }
+        if (v == dateLyt.getEditText()) { dateSetting(dateLyt, this); }
+        if (v == startTimeLyt.getEditText()) { timeSetting(true, false, startTimeLyt, endTimeLyt, this); }
+        if (v == endTimeLyt.getEditText()) { timeSetting(false, true, startTimeLyt, endTimeLyt, this); }
         if (v == roomLyt.getEditText()) { roomLyt.setError(""); }
         if (v == addParticipantLyt.getEditText()) { addParticipantLyt.setError(""); }
         if (v == addParticipantButton) { addParticipant(); }
@@ -140,7 +137,9 @@ public class AddMeetingActivity extends AppCompatActivity implements View.OnClic
 
     public void addParticipant() {
         String mailAddress = Objects.requireNonNull(addParticipantLyt.getEditText()).getText().toString();
-        boolean mailOK = MeetingToolbox.checkMail(mailAddress);
+        boolean mailOK = checkMail(mailAddress);
+
+        addParticipantLyt.setError("");
 
         if (mailOK) {
             hideVirtualKeyboard(addParticipantButton);
@@ -158,7 +157,7 @@ public class AddMeetingActivity extends AppCompatActivity implements View.OnClic
         String startText = Objects.requireNonNull(startTimeLyt.getEditText()).getText().toString();
         String endText = Objects.requireNonNull(endTimeLyt.getEditText()).getText().toString();
         String roomText = roomTextView.getText().toString();
-        //-
+
         String nameErrorText = getString(R.string.error_meeting_name);
         String dateErrorText = getString(R.string.error_meeting_date);
         String timeErrorText = getString(R.string.error_meeting_time);
@@ -166,8 +165,9 @@ public class AddMeetingActivity extends AppCompatActivity implements View.OnClic
         String roomErrorText = getString(R.string.error_meeting_room);
         String selectedErrorText = getString(R.string.error_slot);
 
+        clearErrorFields(nameLyt, dateLyt, startTimeLyt, endTimeLyt, roomLyt, addParticipantLyt);
 
-        boolean fieldsOK = MeetingToolbox.checkFields(nameLyt, nameText, nameErrorText, dateLyt, dateTextLong, dateErrorText,
+        boolean fieldsOK = checkFields(nameLyt, nameText, nameErrorText, dateLyt, dateTextLong, dateErrorText,
                 startTimeLyt, startText, endTimeLyt, endText, timeErrorText, endErrorText, roomLyt, roomText, roomErrorText);
         if (fieldsOK) {
             try {
@@ -181,7 +181,7 @@ public class AddMeetingActivity extends AppCompatActivity implements View.OnClic
             selectedEnd = endText.replace("h", ":");
             selectedRoom = mMeetingApiService.getRoomByName(roomText.split(" ")[0]);
 
-            boolean slotOK = MeetingToolbox.checkSlot(selectedDate, selectedStart, selectedEnd, selectedRoom, roomLyt, selectedErrorText);
+            boolean slotOK = checkSlot(selectedDate, selectedStart, selectedEnd, selectedRoom, roomLyt, selectedErrorText);
             if (slotOK) {
                 if (participantsList.isEmpty()) {
                     showAlertDialog();
@@ -230,7 +230,7 @@ public class AddMeetingActivity extends AppCompatActivity implements View.OnClic
 
         // // Option C2 : Création dans cette activité --------------------------------------------
         mMeetingApiService.createMeeting(meetingToSchedule);
-        Toast.makeText(this, "La réunion \" " + nameText + "\" a été créée", Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, "La réunion \"" + nameText + "\" a été créée !", Toast.LENGTH_SHORT).show();
         // // Fin ---------------------------------------------------------------------------------
 
         finish();

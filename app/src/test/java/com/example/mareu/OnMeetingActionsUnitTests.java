@@ -11,6 +11,7 @@ import org.junit.Test;
 
 import java.util.Arrays;
 
+// @RunWith(AndroidJUnit4.class)
 public class OnMeetingActionsUnitTests {
 
     private final MeetingApiService service = DI.getMeetingApiService();
