@@ -21,8 +21,8 @@
     <string name="error_meeting_time">Choisir une heure !</string>
     <string name="error_meeting_endTime">Heure de fin incorrecte !</string>
     <string name="error_meeting_room">Choisir une salle !</string>
-    <string name="error_email">L\'adresse eMail est incorrecte !</string>
-    <string name="error_slot">La salle n\'est pas disponible sur ce créneau !</string>
+    <string name="error_email">Adresse eMail incorrecte !</string>
+    <string name="error_slot">Salle non disponible sur ce créneau !</string>
     <string name="title_participants_list">Participants</string>
     <string name="title_alertDialog">Confirmation</string>
     <string name="alertDialog_delete_meeting">Voulez-vous supprimer cette réunion ?</string>
