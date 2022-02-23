@@ -102,8 +102,10 @@ public class OnMeetingActionsInstrumentedTests {
         onView(withId(R.id.button_create_meeting)).perform(click());
 
         // Then check if error text is displayed
+        onView(withId(R.id.start_time_meeting_layout))
+                .check(matches(hasTextInputLayoutErrorText("Horaires incohérents !")));
         onView(withId(R.id.end_time_meeting_layout))
-                .check(matches(hasTextInputLayoutErrorText("Heure de fin incorrecte !")));
+                .check(matches(hasTextInputLayoutErrorText("Horaires incohérents !")));
 
         // Create meeting without participant
         createMeetingWithoutParticipant();

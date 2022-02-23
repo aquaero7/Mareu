@@ -19,7 +19,7 @@
     <string name="error_meeting_name">Saisir le nom de la réunion !</string>
     <string name="error_meeting_date">Choisir une date !</string>
     <string name="error_meeting_time">Choisir une heure !</string>
-    <string name="error_meeting_endTime">Heure de fin incorrecte !</string>
+    <string name="error_meeting_inconsistentTime">Horaires incohérents !</string>
     <string name="error_meeting_room">Choisir une salle !</string>
     <string name="error_email">Adresse eMail incorrecte !</string>
     <string name="error_slot">Salle non disponible sur ce créneau !</string>

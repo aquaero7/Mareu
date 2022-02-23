@@ -75,6 +75,7 @@ public class MeetingToolbox {
             fieldsOK = false;
         }
         if (!mStartText.isEmpty() && !mEndText.isEmpty() && (mEndText).compareTo(mStartText) <= 0) {
+            mStartLayout.setError(mEndErrorText);
             mEndLayout.setError(mEndErrorText);
             fieldsOK = false;
         }
@@ -153,6 +154,7 @@ public class MeetingToolbox {
                 if (mStart) {
                     Objects.requireNonNull(mStartTimeLyt.getEditText()).setText(dfTime.format(mTime).replace(":", "h"));
                     mStartTimeLyt.setError("");
+                    mEndTimeLyt.setError("");
 
                     // Preset end time calculated with default duration
                     if (Objects.requireNonNull(mEndTimeLyt.getEditText()).getText().toString().isEmpty()) {
@@ -161,12 +163,12 @@ public class MeetingToolbox {
                         calH2.add(Calendar.MINUTE,  DEFAULT_MEETING_DURATION_IN_MIN);
                         Date mTime2 = calH2.getTime();
                         mEndTimeLyt.getEditText().setText(dfTime.format(mTime2).replace(":", "h"));
-                        mEndTimeLyt.setError("");
                     }
                 }
                 if (mEnd) {
                     Objects.requireNonNull(mEndTimeLyt.getEditText()).setText(dfTime.format(mTime).replace(":", "h"));
                     mEndTimeLyt.setError("");
+                    if (!Objects.requireNonNull(mStartTimeLyt.getEditText()).getText().toString().isEmpty()) { mStartTimeLyt.setError(""); }
                 }
             }
         };

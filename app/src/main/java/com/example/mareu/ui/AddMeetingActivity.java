@@ -161,14 +161,14 @@ public class AddMeetingActivity extends AppCompatActivity implements View.OnClic
         String nameErrorText = getString(R.string.error_meeting_name);
         String dateErrorText = getString(R.string.error_meeting_date);
         String timeErrorText = getString(R.string.error_meeting_time);
-        String endErrorText = getString(R.string.error_meeting_endTime);
+        String inconsistentTimeErrorText = getString(R.string.error_meeting_inconsistentTime);
         String roomErrorText = getString(R.string.error_meeting_room);
         String selectedErrorText = getString(R.string.error_slot);
 
         clearErrorFields(nameLyt, dateLyt, startTimeLyt, endTimeLyt, roomLyt, addParticipantLyt);
 
         boolean fieldsOK = checkFields(nameLyt, nameText, nameErrorText, dateLyt, dateTextLong, dateErrorText,
-                startTimeLyt, startText, endTimeLyt, endText, timeErrorText, endErrorText, roomLyt, roomText, roomErrorText);
+                startTimeLyt, startText, endTimeLyt, endText, timeErrorText, inconsistentTimeErrorText, roomLyt, roomText, roomErrorText);
         if (fieldsOK) {
             try {
                 selectedDate = dfDate.format(Objects.requireNonNull(dfDateLong.parse(dateTextLong)));   // Mise au format de la date pour création meeting
