@@ -27,6 +27,13 @@ public interface MeetingApiService {
     public List<Room> getDummyRooms();
 
     /**
+     * Get all my Rooms
+     * @return {@link List}
+     */
+    public List<Room> getLamzoneRooms();
+
+
+    /**
      * Get all my Meetings
      * @return {@link List}
      */
@@ -68,7 +75,7 @@ public interface MeetingApiService {
      * Get list of Room names
      * @return @String
      */
-    CharSequence[] getRoomsList();
+    CharSequence[] getRoomsItems();
 
 
     // Creation ans deletion methods

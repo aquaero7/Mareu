@@ -163,7 +163,7 @@ public class ListMeetingsActivity extends AppCompatActivity {
     private void meetingDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle(getString(R.string.hint_meeting_room));
-        builder.setItems(mMeetingApiService.getRoomsList(), new DialogInterface.OnClickListener() {
+        builder.setItems(mMeetingApiService.getRoomsItems(), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 mMeetings.clear();

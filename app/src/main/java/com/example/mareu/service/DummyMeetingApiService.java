@@ -1,9 +1,12 @@
 package com.example.mareu.service;
 
+import static com.example.mareu.service.DummyMeetingGenerator.generateDummyMeetings;
+import static com.example.mareu.service.DummyMeetingGenerator.generateDummyRooms;
+import static com.example.mareu.service.DummyMeetingGenerator.generateRooms;
+
 import com.example.mareu.model.Meeting;
 import com.example.mareu.model.ReservationSlot;
 import com.example.mareu.model.Room;
-import com.example.mareu.ui.AddMeetingActivity;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -11,23 +14,37 @@ import java.util.List;
 
 public class DummyMeetingApiService implements MeetingApiService {
 
-    private List<Meeting> meetings = meetings = getDummyMeetings();
+    /*  // Start application with dummy meetings already loaded
+    private List<Meeting> meetings = getDummyMeetings();
     private List<Room> rooms = getDummyRooms();
+    */
+
+    //  // Start application with an empty meetings list
+    private List<Meeting> meetings = new ArrayList<>();
+    private List<Room> rooms = getLamzoneRooms();
+    //
 
 
     // Get methods
 
     @Override
     public List<Meeting> getDummyMeetings() {
-        // return DummyMeetingGenerator.generateMeetings(); // Unsorted
-        return sortMeetingsByDate(sortMeetingsByStart(sortMeetingsByEnd(DummyMeetingGenerator.generateMeetings())));   // Sorted
+        // return generateDummyMeetings(); // Unsorted
+        return sortMeetingsByDate(sortMeetingsByStart(sortMeetingsByEnd(generateDummyMeetings())));   // Sorted
     }
 
     @Override
     public List<Room> getDummyRooms() {
-        // return DummyMeetingGenerator.generateRooms();   // Unsorted
-        return sortRoomsByName(DummyMeetingGenerator.generateRooms());  // Sorted
+        // return generateDummyRooms();   // Unsorted
+        return sortRoomsByName(generateDummyRooms());  // Sorted
     }
+
+    @Override
+    public List<Room> getLamzoneRooms() {
+        // return generateRooms();   // Unsorted
+        return sortRoomsByName(generateRooms());  // Sorted
+    }
+
 
     @Override
     public List<Meeting> getMeetings() {
@@ -86,7 +103,7 @@ public class DummyMeetingApiService implements MeetingApiService {
     }
 
     @Override
-    public CharSequence[] getRoomsList() {
+    public CharSequence[] getRoomsItems() {
         CharSequence[] roomsList = new CharSequence[rooms.size()];
         for (int i = 0; i < rooms.size(); i++) {
             // roomsList[i] = rooms.get(i).getName();   // Pour récupérer seulement le nom

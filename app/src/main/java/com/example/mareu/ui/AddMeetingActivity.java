@@ -85,7 +85,7 @@ public class AddMeetingActivity extends AppCompatActivity implements View.OnClic
         createMeetingButton = mActivityAddMeetingBinding.buttonCreateMeeting;
 
         // Init roomsList
-        CharSequence[] roomsList = mMeetingApiService.getRoomsList();
+        CharSequence[] roomsList = mMeetingApiService.getRoomsItems();
         ArrayAdapter roomDropdownAdapter = new ArrayAdapter(this, R.layout.list_item, roomsList);
         roomTextView.setAdapter(roomDropdownAdapter);
 

@@ -19,13 +19,15 @@ import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
 
 import static com.example.mareu.utils.InstrumentedTestsToolbox.addParticipantEmail;
+import static com.example.mareu.utils.InstrumentedTestsToolbox.clearTestMeetingsList;
 import static com.example.mareu.utils.InstrumentedTestsToolbox.createMeetingWithoutParticipant;
 import static com.example.mareu.utils.InstrumentedTestsToolbox.deleteMeetingAtPosition;
-import static com.example.mareu.utils.InstrumentedTestsToolbox.fillAllFields;
+import static com.example.mareu.utils.InstrumentedTestsToolbox.fillTestMeetingsList;
 import static com.example.mareu.utils.InstrumentedTestsToolbox.resetFilters;
 import static com.example.mareu.utils.InstrumentedTestsToolbox.setEndBeforeStart;
 import static com.example.mareu.utils.InstrumentedTestsToolbox.setFilterOnTestDate;
 import static com.example.mareu.utils.InstrumentedTestsToolbox.setFilterOnTestRoom;
+import static com.example.mareu.utils.InstrumentedTestsToolbox.setTestMeetingsList_1;
 import static com.example.mareu.utils.RecyclerViewItemCountAssertion.withItemCount;
 import static com.example.mareu.utils.TextInputLayoutErrorMatcher.hasTextInputLayoutErrorText;
 
@@ -65,11 +67,6 @@ public class OnMeetingActionsInstrumentedTests {
                 decorView = activity.getWindow().getDecorView();
             }
         });
-
-        meetingsListSize = service.getMeetings().size();
-        meetingsListSizeOnCreationActionTestDate = service.getMeetingsByDate("17/02/2022").size();
-        meetingsListSizeOnDeletionActionTestDate = service.getMeetingsByDate("23/02/2022").size();
-        meetingsListSizeOnRoomTest = service.getMeetingsByPlace(service.getRoomByName("Azur")).size();
     }
 
 
@@ -152,6 +149,10 @@ public class OnMeetingActionsInstrumentedTests {
 
     @Test
     public void createMeetingActionShouldAddItem() {
+        meetingsListSizeOnCreationActionTestDate = service.getMeetingsByDate("17/02/2022").size();
+        meetingsListSizeOnRoomTest = service.getMeetingsByPlace(service.getRoomByName("Azur")).size();
+        meetingsListSize = service.getMeetings().size();
+
         // Check if meetings list is displayed
         onView(ViewMatchers.withId(R.id.recyclerView)).check(matches(isDisplayed()));
         setFilterOnTestDate(17, 2, 2022);
@@ -165,14 +166,8 @@ public class OnMeetingActionsInstrumentedTests {
         // Check the size of the whole meetings list
         onView(ViewMatchers.withId(R.id.recyclerView)).check(withItemCount(meetingsListSize));
 
-        // Go to meetings creation view
-        onView(withId(R.id.addMeetingButton)).perform(click());
-        // Check if meeting creation view is displayed
-        onView(withId(R.id.header_add_meeting)).check(matches(isDisplayed()));
-        // Fill all fields for meeting creation
-        fillAllFields();
-        // Schedule meeting
-        onView(withId(R.id.button_create_meeting)).perform(click());
+        // Create new meeting
+        fillTestMeetingsList("U", 2022, 02, 17, 10, 2); // Azur
 
         // Check that we are back to meetings list
         onView(ViewMatchers.withId(R.id.recyclerView)).check(matches(isDisplayed()));
@@ -189,9 +184,15 @@ public class OnMeetingActionsInstrumentedTests {
 
     @Test
     public void deleteMeetingActionShouldRemoveItem() throws InterruptedException {
+        setTestMeetingsList_1();
+
+        meetingsListSizeOnDeletionActionTestDate = service.getMeetingsByDate("27/02/2022").size();
+        meetingsListSizeOnRoomTest = service.getMeetingsByPlace(service.getRoomByName("Azur")).size();
+        meetingsListSize = service.getMeetings().size();
+
         // Check if meetings list is displayed
         onView(ViewMatchers.withId(R.id.recyclerView)).check(matches(isDisplayed()));
-        setFilterOnTestDate(23, 2, 2022);
+        setFilterOnTestDate(27, 2, 2022);
         // Check the number of meetings scheduled on this date
         onView(ViewMatchers.withId(R.id.recyclerView)).check(withItemCount(meetingsListSizeOnDeletionActionTestDate));
         setFilterOnTestRoom();  // Azur
@@ -202,19 +203,21 @@ public class OnMeetingActionsInstrumentedTests {
         // Check the size of the whole meetings list
         onView(ViewMatchers.withId(R.id.recyclerView)).check(withItemCount(meetingsListSize));
 
-        // Delete Meeting 'Réunion B' scheduled in room 'Azur' from 15h00 to 15h45...
+        // Delete Meeting 'Réunion C' scheduled in room 'Azur' from 15h00 to 15h45...
 
         // Click on delete action button
-        deleteMeetingAtPosition(2);
+        deleteMeetingAtPosition(1);
 
         // Check if the whole meetings list contains one less item
         onView(ViewMatchers.withId(R.id.recyclerView)).check(withItemCount(meetingsListSize - 1));
         // Check if the list of meetings scheduled on test date contains one less item
-        setFilterOnTestDate(23, 2, 2022);
+        setFilterOnTestDate(27, 2, 2022);
         onView(ViewMatchers.withId(R.id.recyclerView)).check(withItemCount(meetingsListSizeOnDeletionActionTestDate - 1));
         // Check if the list of meetings scheduled in test room contains one less item
         setFilterOnTestRoom();
         onView(ViewMatchers.withId(R.id.recyclerView)).check(withItemCount(meetingsListSizeOnRoomTest - 1));
+
+        clearTestMeetingsList();
     }
 
     @Test
@@ -223,15 +226,7 @@ public class OnMeetingActionsInstrumentedTests {
         createMeetingActionShouldAddItem();
 
         // Try to create another meeting on the same slot in the same room...
-
-        // Go to meetings creation view
-        onView(withId(R.id.addMeetingButton)).perform(click());
-        // Check if meeting creation view is displayed
-        onView(withId(R.id.header_add_meeting)).check(matches(isDisplayed()));
-        // Fill all fields for meeting creation
-        fillAllFields();
-        // Schedule meeting
-        onView(withId(R.id.button_create_meeting)).perform(click());
+        fillTestMeetingsList("U", 2022, 02, 17, 10, 2); // Azur
 
         // Check if error text on room field is displayed
         onView(withId(R.id.room_meeting_layout))
